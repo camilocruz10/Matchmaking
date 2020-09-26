@@ -18,8 +18,9 @@ public class FirebaseAuthenticationTokenFilter extends AbstractAuthenticationPro
 	private final static String TOKEN_HEADER = "X-Firebase-Auth";
 
 	public FirebaseAuthenticationTokenFilter() {
-		super("/auth/**");
+		super("/play/**");
 	}
+
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		final String authToken = request.getHeader(TOKEN_HEADER);
@@ -29,12 +30,10 @@ public class FirebaseAuthenticationTokenFilter extends AbstractAuthenticationPro
 		}
 		return getAuthenticationManager().authenticate(new FirebaseAuthenticationToken(authToken));
 	}
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
-            throws IOException, ServletException {
-		System.out.println("Se intento");
-        super.successfulAuthentication(request, response, chain, authResult);
-        System.out.println("Lo logramos");
-        chain.doFilter(request, response);
-    }
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authResult) throws IOException, ServletException {
+		chain.doFilter(request, response);
+	}
 }

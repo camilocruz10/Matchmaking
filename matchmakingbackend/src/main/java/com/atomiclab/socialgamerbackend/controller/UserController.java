@@ -4,42 +4,42 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.User;
+import com.atomiclab.socialgamerbackend.service.FirebaseService;
 import com.atomiclab.socialgamerbackend.service.UserService;
-import com.google.firebase.auth.FirebaseAuthException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/play")
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    FirebaseService firebaseAuth;
 
-    @PostMapping("/register")
-    public boolean register(@RequestBody User user) throws FirebaseAuthException {
-        return userService.register(user);
-    }
-    @PutMapping("/update")
-    public boolean updateProfile(@RequestBody User user) {
-        return userService.updateProfile(user);
+    @PutMapping("/edit/profile")
+    public boolean updateProfile(@RequestBody User user, @RequestHeader("X-Firebase-Auth") String token ) throws InterruptedException, ExecutionException {  
+        return userService.updateProfile(user, token) ;
     }
     @GetMapping("/profile/{id}")
-    public User getUser(String id) {
-        // TODO Auto-generated method stub
-        return null;
+    public User getUser(@PathVariable String tokenUpdate) throws InterruptedException, ExecutionException {
+        return userService.getUser(tokenUpdate);
+    }
+    @GetMapping("/edit/profile")
+    public User getUserEditProfile(@RequestHeader("X-Firebase-Auth") String token )
+            throws InterruptedException, ExecutionException{
+        return userService.getUserByToken(token);
     }
     @GetMapping("/friends")
     public List<User> getFriends() {
         return null;
-    }
-    @GetMapping("/list")
-    public List<User> getAllUsers() throws InterruptedException, ExecutionException {
-        System.out.println("HOLA");
-        return userService.getAllUsers();
     }
     public String delete(String id) {
         return null;

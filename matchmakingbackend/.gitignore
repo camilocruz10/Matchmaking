@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /*.json
+/bin
 
 ### STS ###
 .apt_generated
@@ -26,8 +27,8 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
 bin
+build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
