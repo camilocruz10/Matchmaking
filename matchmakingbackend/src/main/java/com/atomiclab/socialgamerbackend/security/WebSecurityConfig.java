@@ -50,8 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // All urls must be authenticated (filter for token always fires (/**)
                 .authorizeRequests()
                 	.antMatchers(HttpMethod.OPTIONS).permitAll()
-                    .antMatchers("/auth/**").authenticated()
-                    .antMatchers("/list/**").authenticated()
+                    .antMatchers("/play/**").permitAll()
                 .and()
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //.and()

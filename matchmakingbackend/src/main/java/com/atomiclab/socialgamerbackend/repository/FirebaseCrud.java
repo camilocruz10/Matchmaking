@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface FirebaseCrud{
-    
     public boolean save(String id, String collectionName, Object data);
     public boolean update(String id, String collectionName, Object data);
     public DocumentSnapshot getById(String collectionName, String id) throws InterruptedException, ExecutionException;
