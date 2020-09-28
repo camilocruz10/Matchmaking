@@ -28,7 +28,7 @@ public class UserController {
     public boolean updateProfile(@RequestBody User user, @RequestHeader("X-Firebase-Auth") String token ) throws InterruptedException, ExecutionException {  
         return userService.updateProfile(user, token) ;
     }
-    @GetMapping("/profile/{id}")
+    @GetMapping("/profile/{id:.+}")
     public User getUser(@PathVariable String tokenUpdate) throws InterruptedException, ExecutionException {
         return userService.getUser(tokenUpdate);
     }

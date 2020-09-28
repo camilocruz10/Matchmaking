@@ -24,7 +24,6 @@ public class FirebaseAuthenticationTokenFilter extends AbstractAuthenticationPro
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		final String authToken = request.getHeader(TOKEN_HEADER);
-		System.out.println(authToken);
 		if (Strings.isNullOrEmpty(authToken)) {
 			throw new RuntimeException("Invaild auth token");
 		}
