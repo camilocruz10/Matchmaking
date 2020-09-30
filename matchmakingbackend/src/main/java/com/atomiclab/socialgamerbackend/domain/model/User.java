@@ -1,21 +1,21 @@
 package com.atomiclab.socialgamerbackend.domain.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 
 @Entity
 public class User {
-    private String apellidos;
-    private Integer calificacion;
-    private Integer conexion;
-    private String contrasena;
     private String correo;
+    private String apellidos;
+    private Integer conexion;
     private Date fecha_nacimiento;
     private String foto_perfil;
-    private String jugando_id;
+    private String jugando;
     private String nombre_usuario;
     private String nombres;
+    private List<String> plataformas;
     private String region_id;
     private Boolean reportado;
 
@@ -25,29 +25,11 @@ public class User {
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
-    public Integer getCalificacion() {
-        return calificacion;
-    }
-    public void setCalificacion(Integer calificacion) {
-        this.calificacion = calificacion;
-    }
     public Integer getConexion() {
         return conexion;
     }
     public void setConexion(Integer conexion) {
         this.conexion = conexion;
-    }
-    public String getContrasena() {
-        return contrasena;
-    }
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-    public String getCorreo() {
-        return correo;
-    }
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
     public Date getFecha_nacimiento() {
         return fecha_nacimiento;
@@ -61,11 +43,11 @@ public class User {
     public void setFoto_perfil(String foto_perfil) {
         this.foto_perfil = foto_perfil;
     }
-    public String getJugando_id() {
-        return jugando_id;
+    public String getJugando() {
+        return jugando;
     }
-    public void setJugando_id(String jugando_id) {
-        this.jugando_id = jugando_id;
+    public void setJugando(String jugando) {
+        this.jugando = jugando;
     }
     public String getNombre_usuario() {
         return nombre_usuario;
@@ -90,5 +72,21 @@ public class User {
     }
     public void setReportado(Boolean reportado) {
         this.reportado = reportado;
+    }
+
+    public List<String> getPlataformas() {
+        return plataformas;
+    }
+
+    public void setPlataformas(List<String> plataformas) {
+        this.plataformas = plataformas;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }

@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.User;
 import com.atomiclab.socialgamerbackend.service.UserService;
-import com.google.firebase.auth.FirebaseAuthException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ public class UserRegisterController {
     UserService userService;
 
     @PostMapping("/register")
-    public boolean register(@RequestBody User user) throws FirebaseAuthException {
+    public boolean register(@RequestBody User user) {
         return userService.register(user);
     }
     @GetMapping("/list")

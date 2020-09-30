@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.User;
-import com.google.firebase.auth.FirebaseAuthException;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    public boolean register(User user) throws FirebaseAuthException;
+    public boolean register(User user);
     public boolean login(String email, String password);
     public boolean updateProfile(User user, String token) throws InterruptedException, ExecutionException;
     public User getUser(String id) throws InterruptedException, ExecutionException;

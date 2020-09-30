@@ -11,7 +11,6 @@ import com.atomiclab.socialgamerbackend.service.FirebaseService;
 import com.atomiclab.socialgamerbackend.service.UserService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,8 @@ public class UserServiceImpl implements UserService {
     FirebaseService firebaseService;
 
     @Override
-    public boolean register(User user) throws FirebaseAuthException {
-        firebaseSecAuth.registerUser(user.getCorreo(), user.getContrasena());
-        firebaseCrud.save(user.getCorreo(), "Persona", user);
-
-        return true;
+    public boolean register(User user) { 
+        return firebaseCrud.save(user.getCorreo(), "Persona", user);
     }
     @Override
     public boolean updateProfile(User user, String token) throws InterruptedException, ExecutionException {
