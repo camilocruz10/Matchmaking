@@ -1,11 +1,11 @@
 package com.atomiclab.socialgamerbackend.repository;
 
-import com.google.firebase.auth.FirebaseAuthException;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public interface FirebaseSecAuth {
-    public void registerUser(String email, String password) throws FirebaseAuthException;
-    public void logoutUser();
+    public String getUid(String token) throws InterruptedException, ExecutionException;
+    public String getEmail(String token) throws InterruptedException, ExecutionException;
 }

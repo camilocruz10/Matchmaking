@@ -3,6 +3,8 @@ package com.atomiclab.socialgamerbackend.repository.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
@@ -10,11 +12,13 @@ import java.util.Objects;
 
 import com.atomiclab.socialgamerbackend.repository.FirebaseStorage;
 import com.atomiclab.socialgamerbackend.service.StorageService;
+import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,18 +29,33 @@ public class FirebaseStorageImp implements FirebaseStorage {
     StorageService storageService;
     
     @Override
-    public String[] uploadFile(MultipartFile multipartFile) throws IOException {
+    public String uploadFile(MultipartFile multipartFile, String folder) throws IOException {
         String bucketName = "spring-course-c4e5a.appspot.com";
         File file = convertMultiPartToFile(multipartFile);
         Path filePath = file.toPath();
         String objectName = generateFileName(multipartFile);
         Storage storage = storageService.getStorageOptions().getService(); 
-        BlobId blobId = BlobId.of(bucketName, "Publicaciones/"+objectName);
+        BlobId blobId = BlobId.of(bucketName, folder+objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-        Blob blob = storage.create(blobInfo, Files.readAllBytes(filePath));
-        System.out.println("File " + filePath + " uploaded to bucket " + blob.getBucket() + " as " + objectName );
+        storage.create(blobInfo, Files.readAllBytes(filePath));
+        
+        return folder.concat(objectName);
+    }
+    @Override
+    public byte[] downloadFile(String fileName) throws Exception {
+        
+        String bucketName = "spring-course-c4e5a.appspot.com";
+        Storage storage = storageService.getStorageOptions().getService(); 
+        Blob blob = storage.get(BlobId.of(bucketName, fileName));
+        ReadChannel reader = blob.reader();
+        InputStream inputStream = Channels.newInputStream(reader);
 
-        return new String[]{"fileUrl", objectName};
+        byte[] content = null;
+
+        content = IOUtils.toByteArray(inputStream);
+
+        return content;
+
     }
     private File convertMultiPartToFile( MultipartFile file) throws IOException {
         File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));

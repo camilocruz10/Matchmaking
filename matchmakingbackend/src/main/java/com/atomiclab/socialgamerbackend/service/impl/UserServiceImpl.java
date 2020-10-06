@@ -1,5 +1,6 @@
 package com.atomiclab.socialgamerbackend.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -7,14 +8,13 @@ import java.util.concurrent.ExecutionException;
 import com.atomiclab.socialgamerbackend.domain.model.User;
 import com.atomiclab.socialgamerbackend.repository.FirebaseCrud;
 import com.atomiclab.socialgamerbackend.repository.FirebaseSecAuth;
-import com.atomiclab.socialgamerbackend.service.FirebaseService;
+import com.atomiclab.socialgamerbackend.repository.FirebaseStorage;
 import com.atomiclab.socialgamerbackend.service.UserService;
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.firebase.auth.FirebaseToken;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,25 +23,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     FirebaseSecAuth firebaseSecAuth;
     @Autowired
-    FirebaseService firebaseService;
+    FirebaseStorage firebaseStorage;
 
     @Override
-    public boolean register(User user) { 
+    public boolean register(User user) {
         return firebaseCrud.save(user.getCorreo(), "Persona", user);
     }
+
     @Override
     public boolean updateProfile(User user, String token) throws InterruptedException, ExecutionException {
-        ApiFuture <FirebaseToken> task = firebaseService.getFirebasAuth().verifyIdTokenAsync(token);
-        FirebaseToken firebaseToken = task.get();
-        return firebaseCrud.update(firebaseToken.getEmail(), "Persona", user);
+        return firebaseCrud.update(firebaseSecAuth.getEmail(token), "Persona", user);
     }
+
     @Override
     public User getUser(String id) throws InterruptedException, ExecutionException {
         return firebaseCrud.getById("Persona", id).toObject(User.class);
-    }
-    @Override
-    public List<User> getFriends() {
-        return null;
     }
     @Override
     public List<User> getAllUsers() throws InterruptedException, ExecutionException {
@@ -49,23 +45,41 @@ public class UserServiceImpl implements UserService {
         for (DocumentSnapshot user : firebaseCrud.get("Persona")) {
             users.add(user.toObject(User.class));
         }
-
         return users;
     }
+
     @Override
     public String delete(String id) {
         // TODO Auto-generated method stub
         return null;
     }
+
     @Override
     public boolean login(String email, String password) {
         // TODO Auto-generated method stub
         return false;
     }
+
     @Override
     public User getUserByToken(String token) throws InterruptedException, ExecutionException {
-        ApiFuture <FirebaseToken> task = firebaseService.getFirebasAuth().verifyIdTokenAsync(token);
-        FirebaseToken firebaseToken = task.get();
-        return firebaseCrud.getById("Persona", firebaseToken.getEmail() ).toObject(User.class);
+        return firebaseCrud.getById("Persona", firebaseSecAuth.getEmail(token)).toObject(User.class);
     }
+
+    @Override
+    public String uploadFile(MultipartFile multipartFile, String folder) throws IOException {
+        return firebaseStorage.uploadFile(multipartFile, folder);
+    }
+
+    @Override
+    public byte[] downloadFile(String file) throws Exception {
+        return firebaseStorage.downloadFile(file);
+    }
+
+    @Override
+    public boolean reportProfile(String id) throws InterruptedException, ExecutionException {
+        User user = firebaseCrud.getById("Persona", id).toObject(User.class);
+        user.setReportado(true);
+        return firebaseCrud.update(id, "Persona", user);
+    }
+
 }

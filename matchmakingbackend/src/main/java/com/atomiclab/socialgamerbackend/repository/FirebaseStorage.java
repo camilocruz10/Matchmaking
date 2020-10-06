@@ -7,5 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface FirebaseStorage {
-    public String[] uploadFile(MultipartFile multipartFile) throws IOException;
+    public String uploadFile(MultipartFile multipartFile, String folder) throws IOException;
+    public byte[] downloadFile(String fileName) throws Exception;    
 }

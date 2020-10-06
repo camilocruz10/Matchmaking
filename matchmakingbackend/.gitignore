@@ -5,6 +5,9 @@ target/
 !**/src/test/**/target/
 /*.json
 /bin
+*.jpg
+*.jpeg
+*.png
 
 ### STS ###
 .apt_generated
