@@ -1,9 +1,11 @@
 package com.atomiclab.socialgamerbackend.controller;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.atomiclab.socialgamerbackend.domain.model.Games;
+import com.atomiclab.socialgamerbackend.domain.model.Post;
 import com.atomiclab.socialgamerbackend.domain.model.User;
 import com.atomiclab.socialgamerbackend.service.SearchService;
 
@@ -19,11 +21,24 @@ public class SearchController {
     @Autowired
     SearchService searchService;
 
-    @GetMapping("/search/{searchWord}")
-    public Set<User> searchUser(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
-        Set<User> personasResult = new HashSet<>();
-        personasResult = searchService.search("Persona", searchWord, "nombre_usuario");
+    @GetMapping("/search/users/{searchWord}")
+    public List<User> searchUser(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
+        List<User> personasResult = new ArrayList<>();
+        personasResult = searchService.searchUser("Persona", searchWord);
         return personasResult;
     }
 
+    @GetMapping("/search/games/{searchWord}")
+    public List<Games> searchGames(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
+        List<Games> gamesList = new ArrayList<>();
+        gamesList = searchService.searchGames("Juego", searchWord);
+        return gamesList;
+    }
+
+    @GetMapping("/search/posts/{searchWord}")
+    public List<Post> searchPost(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
+        List<Post> gamesList = new ArrayList<>();
+        gamesList = searchService.searchPost("Publicaciones", searchWord);
+        return gamesList;
+    }
 }

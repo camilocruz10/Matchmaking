@@ -19,4 +19,5 @@ public interface FirebaseCrud{
     public DocumentSnapshot getById(String collectionName, String id) throws InterruptedException, ExecutionException;
     public List<DocumentSnapshot> get(String collectionName) throws InterruptedException, ExecutionException;
     public boolean delete(String id, String collectionName);
+	public boolean saveWithoutId(String collectionName, Object collectionData, String subCollectionName, Object subCollectionData);
 }

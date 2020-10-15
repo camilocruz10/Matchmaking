@@ -21,6 +21,7 @@ import com.google.cloud.storage.Storage;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -38,11 +39,10 @@ public class FirebaseStorageImp implements FirebaseStorage {
         BlobId blobId = BlobId.of(bucketName, folder+objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         storage.create(blobInfo, Files.readAllBytes(filePath));
-        
         return folder.concat(objectName);
     }
     @Override
-    public byte[] downloadFile(String fileName) throws Exception {
+    public String downloadFile(String fileName) throws Exception {
         
         String bucketName = "spring-course-c4e5a.appspot.com";
         Storage storage = storageService.getStorageOptions().getService(); 
@@ -53,8 +53,17 @@ public class FirebaseStorageImp implements FirebaseStorage {
         byte[] content = null;
 
         content = IOUtils.toByteArray(inputStream);
+        byte[] encoded = Base64Utils.encode(content);
+        return new String(encoded);    // Outputs "SGVsbG8="
 
-        return content;
+        /*final ByteArrayResource byteArrayResource = new ByteArrayResource(content);
+
+        return ResponseEntity
+                .ok()
+                .contentLength(content.length)
+                .header("Content-type", "application/octet-stream")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(byteArrayResource);*/
 
     }
     private File convertMultiPartToFile( MultipartFile file) throws IOException {

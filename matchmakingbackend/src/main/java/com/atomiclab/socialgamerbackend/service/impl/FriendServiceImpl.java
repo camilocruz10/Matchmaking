@@ -63,14 +63,25 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public boolean addFriend(String token, String friendId) throws InterruptedException, ExecutionException {
         Query requestsQuery = firebaseCrud.getCollection("Solicitudes")
-            .whereEqualTo("person.persona_id", firebaseSecAuth.getEmail(token)).
-            whereEqualTo("receptor_id", friendId);
+            .whereEqualTo("person.persona_id", friendId).
+            whereEqualTo("receptor_id", firebaseSecAuth.getEmail(token));
         ApiFuture<QuerySnapshot> querySnapshot = requestsQuery.get();
         for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
             firebaseCrud.delete(document.getId(), "Solicitudes");
         }
         Friend friends = new Friend(firebaseSecAuth.getEmail(token), friendId);
         return firebaseCrud.save("Amigos", friends);
+    }
+
+    @Override
+    public void rejectFriend(String token, String friendId) throws InterruptedException, ExecutionException {
+        Query requestsQuery = firebaseCrud.getCollection("Solicitudes")
+            .whereEqualTo("person.persona_id", friendId).
+            whereEqualTo("receptor_id", firebaseSecAuth.getEmail(token));
+        ApiFuture<QuerySnapshot> querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            firebaseCrud.delete(document.getId(), "Solicitudes");
+        }
     }
 
     @Override
@@ -103,14 +114,14 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public List<Person> getFriends(String token) throws InterruptedException, ExecutionException {
+    public List<Person> getFriends(String token, String id) throws InterruptedException, ExecutionException {
         List<Person> friends = new ArrayList<Person>();
         CollectionReference collection = firebaseCrud.getCollection("Amigos");
         Query requestsQuery1 = collection
-            .whereEqualTo("persona1", firebaseSecAuth.getEmail(token))
+            .whereEqualTo("persona1", id)
             .select("persona2");
         Query requestsQuery2 = collection
-            .whereEqualTo("persona2", firebaseSecAuth.getEmail(token))
+            .whereEqualTo("persona2", id)
             .select("persona1");
         for(DocumentSnapshot document : requestsQuery1.get().get().getDocuments()){
             Person person = firebaseCrud.getById("Persona", document.getData().get("persona2").toString()).toObject(Person.class);

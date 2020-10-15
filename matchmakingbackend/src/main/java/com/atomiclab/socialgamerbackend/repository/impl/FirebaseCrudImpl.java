@@ -74,7 +74,8 @@ public class FirebaseCrudImpl implements FirebaseCrud {
 
     @Override
     public boolean saveSubCollection(String collectionName, String docId, String subcollectionName, Object data) {
-        CollectionReference subCollection = firebaseService.getFirestore().collection(collectionName).document(docId).collection(subcollectionName);
+        CollectionReference subCollection = firebaseService.getFirestore().collection(collectionName).document(docId)
+                .collection(subcollectionName);
         ApiFuture<WriteResult> writeInSnapshot = subCollection.document().create(data);
         try {
             writeInSnapshot.get();
@@ -117,5 +118,21 @@ public class FirebaseCrudImpl implements FirebaseCrud {
         }
         return true;
     }
-    
+
+    @Override
+    public boolean saveWithoutId(String collectionName, Object collectionData, String subCollectionName, Object subCollectionData) {
+        boolean funciono2 = false;
+        System.out.println("-------------------antes");
+        String id = firebaseService.getFirestore().collection(collectionName).document().getId(); 
+        boolean funciono = update(id, collectionName, collectionData);
+        System.out.println("-------------------despues");
+        if(funciono){
+            CollectionReference ppp = firebaseService.getFirestore().collection(collectionName).document(id).collection(subCollectionName);
+            ppp.add(subCollectionData);
+            //funciono2 = saveSubCollection(collectionName, id, subCollectionName, subCollectionData);
+            System.out.println("-------------------despues22222222");
+        } 
+        return funciono && funciono2;
+    }
+
 }

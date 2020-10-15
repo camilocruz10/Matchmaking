@@ -28,31 +28,44 @@ public class UserController {
     FirebaseService firebaseAuth;
 
     @PutMapping("/edit/profile")
-    public boolean updateProfile(@RequestBody User user, @RequestHeader("X-Firebase-Auth") String token) throws InterruptedException, ExecutionException { 
+    public boolean updateProfile(@RequestBody User user, @RequestHeader("X-Firebase-Auth") String token)
+            throws InterruptedException, ExecutionException {
         return userService.updateProfile(user, token);
     }
+
     @PutMapping("/profile/report/{id:.+}")
-    public boolean report(@PathVariable String id) throws InterruptedException, ExecutionException {  
+    public boolean report(@PathVariable String id) throws InterruptedException, ExecutionException {
         return userService.reportProfile(id);
     }
+
     @GetMapping("/profile/{id:.+}")
     public User getUser(@PathVariable String id) throws InterruptedException, ExecutionException {
         return userService.getUser(id);
     }
+
     @GetMapping("/edit/profile")
-    public User getUserEditProfile(@RequestHeader("X-Firebase-Auth") String token )
-            throws InterruptedException, ExecutionException{
+    public User getUserEditProfile(@RequestHeader("X-Firebase-Auth") String token)
+            throws InterruptedException, ExecutionException {
         return userService.getUserByToken(token);
     }
+
     public String delete(String id) {
         return null;
     }
+
     @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file, @RequestParam("folder") String folder) throws IOException {
+    public String upload(@RequestParam("file") MultipartFile file, @RequestParam("folder") String folder)
+            throws IOException {
         return userService.uploadFile(file, folder);
     }
-    @PostMapping("/download")
-    public byte[] download(@RequestParam("file") String filename) throws Exception {
+
+    @GetMapping("/download")
+    public String download(@RequestParam(name = "ruta") String filename) throws Exception {
         return userService.downloadFile(filename);
+    }
+
+    @PutMapping("/post/report/{id:.+}")
+    public boolean reportPost(@PathVariable String id) throws InterruptedException, ExecutionException {
+        return userService.reportPost(id);
     }
 }
