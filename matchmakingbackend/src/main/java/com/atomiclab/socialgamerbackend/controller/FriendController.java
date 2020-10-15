@@ -26,6 +26,10 @@ public class FriendController {
     public List<Person> getRequests(@RequestHeader("X-Firebase-Auth") String token) throws InterruptedException, ExecutionException {
         return friendService.getFriendRequests(token);
     }
+    @GetMapping("/friends/{id:.+}")
+    public List<Person> getFriends(@RequestHeader("X-Firebase-Auth") String token, @PathVariable String id) throws InterruptedException, ExecutionException {
+        return friendService.getFriends(token, id);
+    }
     @GetMapping("/profile/isFriend/{id:.+}")
     public boolean isFriend(@RequestHeader("X-Firebase-Auth") String token, @PathVariable String id) throws InterruptedException, ExecutionException {
         return friendService.isFriend(token, id);
@@ -39,16 +43,15 @@ public class FriendController {
         return friendService.sendFriendRequest(token, id);
     }
     @PostMapping("/profile/accept")
-    public boolean acceptFriend(@RequestHeader("X-Firebase-Auth") String token, @RequestBody Person person) throws InterruptedException, ExecutionException {
-        return friendService.addFriend(token, person.getPersona_id());
+    public boolean acceptFriend(@RequestHeader("X-Firebase-Auth") String token, @RequestBody String id) throws InterruptedException, ExecutionException {
+        return friendService.addFriend(token, id);
+    }
+    @PostMapping("/profile/reject")
+    public void rejectFriend(@RequestHeader("X-Firebase-Auth") String token, @RequestBody String id) throws InterruptedException, ExecutionException {
+        friendService.rejectFriend(token, id);
     }
     @DeleteMapping("/profile/delete/{id:.+}")
     public boolean deleteFriend(@RequestHeader("X-Firebase-Auth") String token, @PathVariable String id) throws InterruptedException, ExecutionException {
         return friendService.deleteFriend(token, id);
-    }
-    @GetMapping("/friends")
-    public List<Person> getFriends(@RequestHeader("X-Firebase-Auth") String token)
-            throws InterruptedException, ExecutionException {
-        return friendService.getFriends(token);
     }
 }

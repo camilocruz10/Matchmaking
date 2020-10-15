@@ -15,5 +15,6 @@ public interface FriendService {
     public boolean addFriend(String token, String friendId) throws InterruptedException, ExecutionException;
     public boolean sendFriendRequest(String token, String friendId) throws InterruptedException, ExecutionException;
     public boolean deleteFriend(String token, String friendId) throws InterruptedException, ExecutionException;
-    public List<Person> getFriends(String token) throws InterruptedException, ExecutionException;
+    public List<Person> getFriends(String token, String id) throws InterruptedException, ExecutionException;
+	public void rejectFriend(String token, String id) throws InterruptedException, ExecutionException;
 }

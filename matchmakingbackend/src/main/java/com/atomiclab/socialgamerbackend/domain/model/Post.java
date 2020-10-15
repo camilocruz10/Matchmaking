@@ -3,6 +3,7 @@ package com.atomiclab.socialgamerbackend.domain.model;
 import java.util.Date;
 
 public class Post {
+    String id;
     Person person;
     String contenido;
     Date fecha;
@@ -47,5 +48,13 @@ public class Post {
 
     public void setReportado(boolean reportado) {
         this.reportado = reportado;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

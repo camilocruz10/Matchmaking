@@ -19,6 +19,7 @@ public interface UserService {
     public String delete(String id);
     public User getUserByToken(String token) throws InterruptedException, ExecutionException;
     public String uploadFile(MultipartFile multipartFile, String folder) throws IOException;
-    public byte[] downloadFile(String file) throws Exception;
-	public boolean reportProfile(String id) throws InterruptedException, ExecutionException;
+    public String downloadFile(String file) throws Exception;
+    public boolean reportProfile(String id) throws InterruptedException, ExecutionException;
+    public boolean reportPost(String id) throws InterruptedException, ExecutionException;
 }

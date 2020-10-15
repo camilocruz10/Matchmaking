@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.atomiclab.socialgamerbackend.domain.model.Post;
 import com.atomiclab.socialgamerbackend.domain.model.User;
 import com.atomiclab.socialgamerbackend.repository.FirebaseCrud;
 import com.atomiclab.socialgamerbackend.repository.FirebaseSecAuth;
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public byte[] downloadFile(String file) throws Exception {
+    public String downloadFile(String file) throws Exception {
         return firebaseStorage.downloadFile(file);
     }
 
@@ -80,6 +81,13 @@ public class UserServiceImpl implements UserService {
         User user = firebaseCrud.getById("Persona", id).toObject(User.class);
         user.setReportado(true);
         return firebaseCrud.update(id, "Persona", user);
+    }
+
+    @Override
+    public boolean reportPost(String id) throws InterruptedException, ExecutionException {
+        Post post = firebaseCrud.getById("Publicaciones", id).toObject(Post.class);
+        post.setReportado(true);
+        return firebaseCrud.update(id, "Publicaciones", post);
     }
 
 }

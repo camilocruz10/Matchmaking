@@ -38,7 +38,7 @@ dependencies {
     compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
     compile 'commons-io:commons-io:2.5'
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    compile 'com.google.firebase:firebase-admin:5.9.0'
+    compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.16.0'
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")
 }
