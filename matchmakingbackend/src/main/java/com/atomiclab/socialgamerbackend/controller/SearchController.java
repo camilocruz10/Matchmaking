@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.Games;
 import com.atomiclab.socialgamerbackend.domain.model.Post;
+import com.atomiclab.socialgamerbackend.domain.model.Squad;
 import com.atomiclab.socialgamerbackend.domain.model.User;
 import com.atomiclab.socialgamerbackend.service.SearchService;
 
@@ -40,5 +41,12 @@ public class SearchController {
         List<Post> gamesList = new ArrayList<>();
         gamesList = searchService.searchPost("Publicaciones", searchWord);
         return gamesList;
+    }
+
+    @GetMapping("/search/squads/{searchWord}")
+    public List<Squad> searchSquad(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
+        List<Squad> squadList = new ArrayList<>();
+        squadList = searchService.searchSquad("Squad", searchWord);
+        return squadList;
     }
 }

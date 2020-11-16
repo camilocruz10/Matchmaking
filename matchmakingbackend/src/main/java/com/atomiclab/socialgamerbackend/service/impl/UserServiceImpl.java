@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
     public User getUser(String id) throws InterruptedException, ExecutionException {
         return firebaseCrud.getById("Persona", id).toObject(User.class);
     }
+
     @Override
     public List<User> getAllUsers() throws InterruptedException, ExecutionException {
         List<User> users = new ArrayList<User>();
@@ -88,6 +89,12 @@ public class UserServiceImpl implements UserService {
         Post post = firebaseCrud.getById("Publicaciones", id).toObject(Post.class);
         post.setReportado(true);
         return firebaseCrud.update(id, "Publicaciones", post);
+    }
+
+    @Override
+    public boolean isAdmin(String token) throws InterruptedException, ExecutionException {
+        DocumentSnapshot doc = firebaseCrud.getById("Administradores", firebaseSecAuth.getUid(token));
+        return doc.exists();
     }
 
 }

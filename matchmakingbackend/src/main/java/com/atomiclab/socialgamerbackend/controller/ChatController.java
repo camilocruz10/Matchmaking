@@ -29,7 +29,6 @@ public class ChatController {
     @PostMapping("/chat/create")
     public boolean createChat(@RequestBody Chat chat, @RequestHeader("X-Firebase-Auth") String token)
             throws InterruptedException, ExecutionException {
-        System.out.println("Holi");
         return chatService.createChat(chat, token);
     }
 

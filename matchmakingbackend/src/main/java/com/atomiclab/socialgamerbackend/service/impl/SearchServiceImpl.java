@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.Games;
 import com.atomiclab.socialgamerbackend.domain.model.Post;
+import com.atomiclab.socialgamerbackend.domain.model.Squad;
 import com.atomiclab.socialgamerbackend.domain.model.User;
 import com.atomiclab.socialgamerbackend.repository.FirebaseCrud;
 import com.atomiclab.socialgamerbackend.service.SearchService;
@@ -54,5 +55,17 @@ public class SearchServiceImpl implements SearchService {
             }
         }
         return postResult;
+    }
+
+    public List<Squad> searchSquad(String collectionName, String searchWord)
+            throws InterruptedException, ExecutionException {
+        List<Squad> squadResult = new ArrayList<>();
+        for (DocumentSnapshot doc : firebaseCrud.getCollection(collectionName).get().get().getDocuments()) {
+            Squad squadAux = doc.toObject(Squad.class);
+            if (squadAux.getNombre().toLowerCase().contains(searchWord.toLowerCase().trim())) {
+                squadResult.add(squadAux);
+            }
+        }
+        return squadResult;
     }
 }

@@ -28,24 +28,25 @@ import org.springframework.web.multipart.MultipartFile;
 public class FirebaseStorageImp implements FirebaseStorage {
     @Autowired
     StorageService storageService;
-    
+
     @Override
     public String uploadFile(MultipartFile multipartFile, String folder) throws IOException {
         String bucketName = "spring-course-c4e5a.appspot.com";
         File file = convertMultiPartToFile(multipartFile);
         Path filePath = file.toPath();
         String objectName = generateFileName(multipartFile);
-        Storage storage = storageService.getStorageOptions().getService(); 
-        BlobId blobId = BlobId.of(bucketName, folder+objectName);
+        Storage storage = storageService.getStorageOptions().getService();
+        BlobId blobId = BlobId.of(bucketName, folder + objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         storage.create(blobInfo, Files.readAllBytes(filePath));
         return folder.concat(objectName);
     }
+
     @Override
     public String downloadFile(String fileName) throws Exception {
-        
+
         String bucketName = "spring-course-c4e5a.appspot.com";
-        Storage storage = storageService.getStorageOptions().getService(); 
+        Storage storage = storageService.getStorageOptions().getService();
         Blob blob = storage.get(BlobId.of(bucketName, fileName));
         ReadChannel reader = blob.reader();
         InputStream inputStream = Channels.newInputStream(reader);
@@ -54,19 +55,20 @@ public class FirebaseStorageImp implements FirebaseStorage {
 
         content = IOUtils.toByteArray(inputStream);
         byte[] encoded = Base64Utils.encode(content);
-        return new String(encoded);    // Outputs "SGVsbG8="
+        return new String(encoded); // Outputs "SGVsbG8="
 
-        /*final ByteArrayResource byteArrayResource = new ByteArrayResource(content);
-
-        return ResponseEntity
-                .ok()
-                .contentLength(content.length)
-                .header("Content-type", "application/octet-stream")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                .body(byteArrayResource);*/
+        /*
+         * final ByteArrayResource byteArrayResource = new ByteArrayResource(content);
+         * 
+         * return ResponseEntity .ok() .contentLength(content.length)
+         * .header("Content-type", "application/octet-stream")
+         * .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName
+         * + "\"") .body(byteArrayResource);
+         */
 
     }
-    private File convertMultiPartToFile( MultipartFile file) throws IOException {
+
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
         File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         FileOutputStream fos = new FileOutputStream(convertedFile);
         fos.write(file.getBytes());
@@ -74,7 +76,15 @@ public class FirebaseStorageImp implements FirebaseStorage {
 
         return convertedFile;
     }
+
     private String generateFileName(MultipartFile multiPart) {
         return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
+    }
+
+    @Override
+    public boolean deleteFile(String fileName) {
+        String bucketName = "spring-course-c4e5a.appspot.com";
+        Storage storage = storageService.getStorageOptions().getService();
+        return storage.delete(BlobId.of(bucketName, fileName));
     }
 }

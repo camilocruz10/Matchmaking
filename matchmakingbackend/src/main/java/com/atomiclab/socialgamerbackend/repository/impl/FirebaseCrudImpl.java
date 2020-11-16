@@ -9,6 +9,8 @@ import com.atomiclab.socialgamerbackend.service.FirebaseService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 
@@ -120,19 +122,55 @@ public class FirebaseCrudImpl implements FirebaseCrud {
     }
 
     @Override
-    public boolean saveWithoutId(String collectionName, Object collectionData, String subCollectionName, Object subCollectionData) {
-        boolean funciono2 = false;
-        System.out.println("-------------------antes");
-        String id = firebaseService.getFirestore().collection(collectionName).document().getId(); 
+    public boolean deleteInSubCollection(String id, String collectionName, String IdSubDocument,
+            String subCollectionName) {
+        CollectionReference userCollection = firebaseService.getFirestore().collection(collectionName).document(id)
+                .collection(subCollectionName);
+        ApiFuture<WriteResult> writeInSnapshot = userCollection.document(IdSubDocument).delete();
+        try {
+            writeInSnapshot.get();
+        } catch (InterruptedException e) {
+            System.out.println("Interrupt");
+        } catch (ExecutionException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String createVoidAndGetId(String collectionName) {
+        String id = firebaseService.getFirestore().collection(collectionName).document().getId();
+        return id;
+    }
+
+    @Override
+    public boolean saveWithoutId(String collectionName, Object collectionData, String subCollectionName,
+            Object subCollectionData) {
+        String id = firebaseService.getFirestore().collection(collectionName).document().getId();
         boolean funciono = update(id, collectionName, collectionData);
-        System.out.println("-------------------despues");
-        if(funciono){
-            CollectionReference ppp = firebaseService.getFirestore().collection(collectionName).document(id).collection(subCollectionName);
+        if (funciono) {
+            CollectionReference ppp = firebaseService.getFirestore().collection(collectionName).document(id)
+                    .collection(subCollectionName);
             ppp.add(subCollectionData);
-            //funciono2 = saveSubCollection(collectionName, id, subCollectionName, subCollectionData);
-            System.out.println("-------------------despues22222222");
-        } 
-        return funciono && funciono2;
+        }
+        return funciono;
+    }
+
+    @Override
+    public String getIdWithUniqueField(String collectionUniqueValue, String collectionName)
+            throws InterruptedException, ExecutionException {
+        List<QueryDocumentSnapshot> results = firebaseService.getFirestore().collection(collectionName)
+                .whereEqualTo("nombre", collectionUniqueValue).get().get().getDocuments();
+        String id = "";
+        if (results.size() > 0) {
+            id = results.get(0).getId();
+        }
+        return id;
+    }
+
+    @Override
+    public Query collectionGroupSearch(String subCollection, String attributeName, String searchWord) {
+        return firebaseService.getFirestore().collectionGroup(subCollection).whereEqualTo(attributeName, searchWord);
     }
 
 }

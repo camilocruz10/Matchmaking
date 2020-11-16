@@ -9,14 +9,17 @@ import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.Chat;
 import com.atomiclab.socialgamerbackend.domain.model.Mensaje;
+import com.atomiclab.socialgamerbackend.domain.model.Person;
 import com.atomiclab.socialgamerbackend.repository.FirebaseCrud;
 import com.atomiclab.socialgamerbackend.repository.FirebaseSecAuth;
 import com.atomiclab.socialgamerbackend.service.ChatService;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.Query.Direction;
 
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +31,35 @@ public class ChatServiceImpl implements ChatService {
     FirebaseSecAuth firebaseSecAuth;
 
     public boolean createChat(Chat chat, String token) throws InterruptedException, ExecutionException {
-        Date fechaActual = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()); 
+        chat = initializeChat(chat, "¡Ya puedes comenzar a chatear con tu amigo", token);
+        return firebaseCrud.saveWithoutId("Chat", chat, "Mensajes", chat.getMensajes().get(0));
+    }
+
+    public String createChatSquads(String token) throws InterruptedException, ExecutionException {
+        List<String> integrantesForChat = new ArrayList<>();
+        String id = firebaseCrud.createVoidAndGetId("Chat");
+        Chat chat = new Chat();
+        chat = initializeChat(chat, "¡Ya puedes comenzar a chatear con tu Squad!", token);
+        integrantesForChat.add(firebaseSecAuth.getEmail(token));
+        chat.setIntegrantes(integrantesForChat);
+        firebaseCrud.saveSubCollection("Chat", id, "Mensajes", chat.getMensajes().get(0));
+        chat.setMensajes(null);
+        firebaseCrud.save(id, "Chat", chat);
+        return id;
+    }
+
+    public Chat initializeChat(Chat chat, String mensajeInicial, String token)
+            throws InterruptedException, ExecutionException {
+        List<Mensaje> mensajeInicio = new ArrayList<>();
+        Date fechaActual = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
         chat.setUltimomsj(fechaActual);
-        System.out.println("Modifico Fecha" + chat.getId());
         Mensaje p = new Mensaje();
-        p.setMensaje("¡Ya puedes comenzar a chatear con tu amigo!");
+        p.setMensaje(mensajeInicial);
         p.setFechayhora(fechaActual);
         p.setRemitente(firebaseSecAuth.getEmail(token));
-        return firebaseCrud.saveWithoutId("Chat", chat, "Mensajes", p);
+        mensajeInicio.add(p);
+        chat.setMensajes(mensajeInicio);
+        return chat;
     }
 
     public boolean sendMessage(Mensaje msj, String chat_id) throws InterruptedException, ExecutionException {
@@ -56,12 +80,15 @@ public class ChatServiceImpl implements ChatService {
             Chat chat = new Chat();
             chat = document.toObject(Chat.class);
             chat.setId(document.getId());
-            DocumentSnapshot doc = collection.document(document.getId()).collection("Mensajes")
-                    .orderBy("fechayhora", Direction.DESCENDING).limit(1).get().get().getDocuments().get(0);
-            Mensaje msj = doc.toObject(Mensaje.class);
-            msj.setId(doc.getId());
-            mensajes.add(msj);
-            chat.setMensajes(mensajes);
+            List<QueryDocumentSnapshot> listDoc = collection.document(document.getId()).collection("Mensajes")
+                    .orderBy("fechayhora", Direction.DESCENDING).limit(1).get().get().getDocuments();
+            if (listDoc.size() > 0) {
+                DocumentSnapshot doc = listDoc.get(0);
+                Mensaje msj = doc.toObject(Mensaje.class);
+                msj.setId(doc.getId());
+                mensajes.add(msj);
+                chat.setMensajes(mensajes);
+            }
             chats.add(chat);
         }
         return chats;
@@ -71,15 +98,21 @@ public class ChatServiceImpl implements ChatService {
         List<Mensaje> mensajes = new ArrayList<>();
         Chat chat = new Chat();
         DocumentSnapshot document = firebaseCrud.getById("Chat", idChat);
-        chat = document.toObject(Chat.class);
-        chat.setId(idChat);
-        for (DocumentSnapshot doc : firebaseCrud.getCollection("Chat").document(idChat).collection("Mensajes")
-                .orderBy("fechayhora", Direction.ASCENDING).get().get().getDocuments()) {
-            Mensaje msj = doc.toObject(Mensaje.class);
-            msj.setId(doc.getId());
-            mensajes.add(msj);
+        if (document != null) {
+            chat = document.toObject(Chat.class);
+            chat.setId(idChat);
+            for (DocumentSnapshot doc : firebaseCrud.getCollection("Chat").document(idChat).collection("Mensajes")
+                    .orderBy("fechayhora", Direction.ASCENDING).get().get().getDocuments()) {
+                Mensaje msj = doc.toObject(Mensaje.class);
+                msj.setId(doc.getId());
+                mensajes.add(msj);
+            }
+            chat.setMensajes(mensajes);
         }
-        chat.setMensajes(mensajes);
         return chat;
+    }
+
+    public boolean updateChat(String idChat, Chat chat) {
+        return firebaseCrud.update(idChat, "Chat", chat);
     }
 }
