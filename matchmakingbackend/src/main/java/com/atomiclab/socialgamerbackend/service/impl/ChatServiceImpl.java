@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutionException;
 
 import com.atomiclab.socialgamerbackend.domain.model.Chat;
 import com.atomiclab.socialgamerbackend.domain.model.Mensaje;
-import com.atomiclab.socialgamerbackend.domain.model.Person;
 import com.atomiclab.socialgamerbackend.repository.FirebaseCrud;
 import com.atomiclab.socialgamerbackend.repository.FirebaseSecAuth;
 import com.atomiclab.socialgamerbackend.service.ChatService;
@@ -19,7 +18,6 @@ import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.Query.Direction;
 
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
