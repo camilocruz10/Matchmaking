@@ -68,4 +68,10 @@ public class UserController {
     public boolean reportPost(@PathVariable String id) throws InterruptedException, ExecutionException {
         return userService.reportPost(id);
     }
+
+    @GetMapping("/isAdmin")
+    public boolean isAdmin(@RequestHeader("X-Firebase-Auth") String token)
+            throws InterruptedException, ExecutionException {
+        return userService.isAdmin(token);
+    }
 }
