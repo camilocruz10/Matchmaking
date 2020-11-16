@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import com.atomiclab.socialgamerbackend.domain.model.Chat;
 import com.atomiclab.socialgamerbackend.domain.model.Mensaje;
-import com.atomiclab.socialgamerbackend.domain.model.Person;
 
 @Service
 public interface ChatService {
