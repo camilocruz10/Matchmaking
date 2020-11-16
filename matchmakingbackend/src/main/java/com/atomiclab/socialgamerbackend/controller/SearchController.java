@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.atomiclab.socialgamerbackend.domain.model.Clan;
 import com.atomiclab.socialgamerbackend.domain.model.Games;
 import com.atomiclab.socialgamerbackend.domain.model.Post;
 import com.atomiclab.socialgamerbackend.domain.model.Squad;
@@ -28,21 +29,24 @@ public class SearchController {
         personasResult = searchService.searchUser("Persona", searchWord);
         return personasResult;
     }
-
     @GetMapping("/search/games/{searchWord}")
     public List<Games> searchGames(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
         List<Games> gamesList = new ArrayList<>();
         gamesList = searchService.searchGames("Juego", searchWord);
         return gamesList;
     }
-
     @GetMapping("/search/posts/{searchWord}")
     public List<Post> searchPost(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
         List<Post> gamesList = new ArrayList<>();
         gamesList = searchService.searchPost("Publicaciones", searchWord);
         return gamesList;
     }
-
+    @GetMapping("/search/clans/{searchWord}")
+    public List<Clan> searchClans(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
+        List<Clan> clansList = new ArrayList<>();
+        clansList = searchService.searchClan("Clanes", searchWord);
+        return clansList;
+    }
     @GetMapping("/search/squads/{searchWord}")
     public List<Squad> searchSquad(@PathVariable String searchWord) throws InterruptedException, ExecutionException {
         List<Squad> squadList = new ArrayList<>();
