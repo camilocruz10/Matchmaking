@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserManageService {
 
-	public boolean unreportProfile(String id) throws InterruptedException, ExecutionException;
-    public List<Person> getReportedUsers() throws InterruptedException, ExecutionException;
-    public List<Post> getReportedPosts() throws InterruptedException, ExecutionException;
-    public boolean unreportPost(String id) throws InterruptedException, ExecutionException;
-    public boolean deletePost(String id) throws InterruptedException, ExecutionException;
-    public boolean deleteProfile(String id) throws InterruptedException, ExecutionException;
+	public boolean unreportProfile(String id, String token) throws InterruptedException, ExecutionException;
+    public List<Person> getReportedUsers(String token) throws InterruptedException, ExecutionException;
+    public List<Post> getReportedPosts(String token) throws InterruptedException, ExecutionException;
+    public boolean unreportPost(String id, String token) throws InterruptedException, ExecutionException;
+    public boolean deletePost(String id, String token) throws InterruptedException, ExecutionException;
+    public boolean deleteProfile(String id, String token) throws InterruptedException, ExecutionException;
+    public boolean isAdmin(String token) throws InterruptedException, ExecutionException;
     
 }

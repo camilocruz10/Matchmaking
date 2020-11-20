@@ -173,4 +173,22 @@ public class FirebaseCrudImpl implements FirebaseCrud {
         return firebaseService.getFirestore().collectionGroup(subCollection).whereEqualTo(attributeName, searchWord);
     }
 
+    @Override
+    public void deleteCollection(CollectionReference collection, int batchSize) {
+        try {
+          ApiFuture<QuerySnapshot> future = collection.limit(batchSize).get();
+          int deleted = 0;
+          List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+          for (QueryDocumentSnapshot document : documents) {
+            document.getReference().delete();
+            ++deleted;
+          }
+          if (deleted >= batchSize) {
+            deleteCollection(collection, batchSize);
+          }
+        } catch (Exception e) {
+          System.err.println("Error deleting collection : " + e.getMessage());
+        }
+      }
+
 }

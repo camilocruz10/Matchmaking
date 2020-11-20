@@ -1,15 +1,14 @@
 package com.atomiclab.socialgamerbackend.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import com.atomiclab.socialgamerbackend.domain.model.RequestSquad;
 import com.atomiclab.socialgamerbackend.domain.model.Chat;
 import com.atomiclab.socialgamerbackend.domain.model.Person;
+import com.atomiclab.socialgamerbackend.domain.model.RequestSquad;
 import com.atomiclab.socialgamerbackend.domain.model.Squad;
 import com.atomiclab.socialgamerbackend.repository.FirebaseCrud;
 import com.atomiclab.socialgamerbackend.repository.FirebaseSecAuth;
@@ -18,7 +17,6 @@ import com.atomiclab.socialgamerbackend.service.ChatService;
 import com.atomiclab.socialgamerbackend.service.FriendService;
 import com.atomiclab.socialgamerbackend.service.SquadsService;
 import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
@@ -144,8 +142,6 @@ public class SquadsServiceImpl implements SquadsService {
 
     @Override
     public Set<Squad> getFriendsSquads(String token) throws InterruptedException, ExecutionException {
-        List<String> friendsId = new ArrayList<>();
-        CollectionReference collection = firebaseCrud.getCollection("Squad");
         Set<Squad> friendsSquads = new HashSet<>();
         for (Person friend : friendService.getFriends(token, firebaseSecAuth.getEmail(token))) {
             if (friend != null) {
@@ -192,7 +188,6 @@ public class SquadsServiceImpl implements SquadsService {
 
     @Override
     public List<Squad> getMySquads(String token) throws InterruptedException, ExecutionException {
-        CollectionReference collection = firebaseCrud.getCollection("Squad");
         List<Squad> mySquads = new ArrayList<>();
         List<Person> persons = new ArrayList<>();
         boolean imInTheSquad = false;

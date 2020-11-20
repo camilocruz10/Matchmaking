@@ -36,7 +36,7 @@ public class MatchmakingServiceImpl implements MatchmakingService {
         firebaseCrud.save("Matchmaking", matchmaking);
     }
     @Override
-    public List<Matchmaking> findMatch(Matchmaking matchmaking) throws InterruptedException, ExecutionException {
+    public List<Matchmaking> findMatch(Matchmaking matchmaking, String token) throws InterruptedException, ExecutionException {
         List<Matchmaking> matchs = new ArrayList<Matchmaking>();
         List<QueryDocumentSnapshot> results = new ArrayList<QueryDocumentSnapshot>();
         CollectionReference collection = firebaseCrud.getCollection("Matchmaking");
@@ -48,8 +48,10 @@ public class MatchmakingServiceImpl implements MatchmakingService {
         }
         for (DocumentSnapshot document : results) {
             Matchmaking m = document.toObject(Matchmaking.class);
-            if(!Collections.disjoint(m.getPlataformas(), matchmaking.getPlataformas())){
-                matchs.add(m);
+            if (!m.getPerson().getPersona_id().equalsIgnoreCase(firebaseSecAuth.getEmail(token))){
+                if(!Collections.disjoint(m.getPlataformas(), matchmaking.getPlataformas())){
+                    matchs.add(m);
+                }
             }
         }
         return matchs;

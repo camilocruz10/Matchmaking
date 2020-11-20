@@ -25,9 +25,9 @@ public class MatchmakingController {
         matchmakingService.create(matchmaking, token);
     }
     @PostMapping("/matchmaking/match")
-    public List<Matchmaking> findMatch(@RequestBody Matchmaking matchmaking)
+    public List<Matchmaking> findMatch(@RequestBody Matchmaking matchmaking,  @RequestHeader("X-Firebase-Auth") String token)
             throws InterruptedException, ExecutionException {
-        return matchmakingService.findMatch(matchmaking);
+        return matchmakingService.findMatch(matchmaking, token);
     }
     @PostMapping("/matchmaking/delete")
     public void delete(@RequestHeader("X-Firebase-Auth") String token) throws InterruptedException, ExecutionException {

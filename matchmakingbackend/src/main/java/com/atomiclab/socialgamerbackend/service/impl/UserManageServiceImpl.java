@@ -16,7 +16,6 @@ import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,21 +30,24 @@ public class UserManageServiceImpl implements UserManageService {
     FirebaseStorage firebaseStorage;
 
     @Override
-    public boolean unreportPost(String id) throws InterruptedException, ExecutionException {
+    public boolean unreportPost(String id, String token) throws InterruptedException, ExecutionException {
+        if (!isAdmin(token)) return false;
         Post post = firebaseCrud.getById("Publicaciones", id).toObject(Post.class);
         post.setReportado(false);
         return firebaseCrud.update(id, "Publicaciones", post);
     }
 
     @Override
-    public boolean unreportProfile(String id) throws InterruptedException, ExecutionException {
+    public boolean unreportProfile(String id, String token) throws InterruptedException, ExecutionException {
+        if (!isAdmin(token)) return false;
         User user = firebaseCrud.getById("Persona", id).toObject(User.class);
         user.setReportado(false);
         return firebaseCrud.update(id, "Persona", user);
     }
 
     @Override
-    public List<Person> getReportedUsers() throws InterruptedException, ExecutionException {
+    public List<Person> getReportedUsers(String token) throws InterruptedException, ExecutionException {
+        if (!isAdmin(token)) return null;
         List<Person> persons = new ArrayList<Person>();
         Person persona = new Person();
         CollectionReference collection = firebaseCrud.getCollection("Persona");
@@ -60,7 +62,8 @@ public class UserManageServiceImpl implements UserManageService {
     }
 
     @Override
-    public List<Post> getReportedPosts() throws InterruptedException, ExecutionException {
+    public List<Post> getReportedPosts(String token) throws InterruptedException, ExecutionException {
+        if (!isAdmin(token)) return null;
         List<Post> posts = new ArrayList<Post>();
         CollectionReference collection = firebaseCrud.getCollection("Publicaciones");
         Query requestsQuery = collection.whereEqualTo("reportado", true);
@@ -72,23 +75,76 @@ public class UserManageServiceImpl implements UserManageService {
     }
 
     @Override
-    public boolean deletePost(String id) throws InterruptedException, ExecutionException {
-        ApiFuture<WriteResult> writeResult = firebaseCrud.getCollection("Publicacines").document(id).delete();
-        if (writeResult.get().getUpdateTime() != null){
-            return true;
+    public boolean deletePost(String id, String token) throws InterruptedException, ExecutionException {
+        if (!isAdmin(token)) return false;
+        firebaseCrud.getCollection("Publicaciones").document(id).delete();
+        Query feeds = firebaseCrud.collectionGroupSearch("Feed", "id", id);
+        ApiFuture<QuerySnapshot> querySnapshot = feeds.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
         }
-        return false;
+        return true;
     }
 
     @Override
-    public boolean deleteProfile(String id) throws InterruptedException, ExecutionException {
-        ApiFuture<WriteResult> writeResult = firebaseCrud.getCollection("Persona").document(id).delete();
-        if (writeResult.get().getUpdateTime() != null){
-            return true;
+    public boolean deleteProfile(String id, String token) throws InterruptedException, ExecutionException {
+        if (!isAdmin(token)) return false;
+        CollectionReference collection = firebaseCrud.getSubCollection("Persona", id, "Feed");
+        firebaseCrud.deleteCollection(collection, 10);
+        firebaseCrud.getCollection("Persona").document(id).delete();
+        Query requestsQuery = firebaseCrud.getCollection("Amigos").whereEqualTo("persona1", id);
+        ApiFuture<QuerySnapshot> querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
         }
-        return false;
+        requestsQuery = firebaseCrud.getCollection("Amigos").whereEqualTo("persona2", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        requestsQuery = firebaseCrud.collectionGroupSearch("Miembros", "persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        //Hacer despues
+        int cambiar_admin_del_clan;
+        requestsQuery = firebaseCrud.getCollection("Comentarios").whereEqualTo("person.persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        requestsQuery = firebaseCrud.getCollection("JuegosFavoritos").whereEqualTo("person.persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        requestsQuery = firebaseCrud.getCollection("Publicaciones").whereEqualTo("person.persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            deletePost(document.getId(), token);
+        }
+        requestsQuery = firebaseCrud.getCollection("Reacciones").whereEqualTo("persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        requestsQuery = firebaseCrud.getCollection("Solicitudes").whereEqualTo("person.persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        requestsQuery = firebaseCrud.collectionGroupSearch("Integrantes", "persona_id", id);
+        querySnapshot = requestsQuery.get();
+        for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+            document.getReference().delete();
+        }
+        return true;
     }
 
-    
-
+    @Override
+    public boolean isAdmin(String token) throws InterruptedException, ExecutionException {
+        DocumentSnapshot doc = firebaseCrud.getById("Administradores", firebaseSecAuth.getUid(token));
+        return doc.exists();
+    }
 }
