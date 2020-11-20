@@ -28,6 +28,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean register(User user) {
+        if(user.getFoto_perfil().equals("") || user.getFoto_perfil() == null)
+            user.setFoto_perfil("Fotosperfil/default.png");
         return firebaseCrud.save(user.getCorreo(), "Persona", user);
     }
 
@@ -48,18 +50,6 @@ public class UserServiceImpl implements UserService {
             users.add(user.toObject(User.class));
         }
         return users;
-    }
-
-    @Override
-    public String delete(String id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean login(String email, String password) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override

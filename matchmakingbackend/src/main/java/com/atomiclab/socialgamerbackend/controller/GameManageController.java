@@ -30,20 +30,21 @@ public class GameManageController {
     GameManageService gameManageService;
 
     @PostMapping("games/new")
-    public boolean createGame(@RequestBody Games game) {
-        return gameManageService.createGame(game);
+    public boolean createGame(@RequestBody Games game, @RequestHeader("X-Firebase-Auth") String token)
+            throws InterruptedException, ExecutionException {
+        return gameManageService.createGame(game, token);
     }
 
     @DeleteMapping("games/delete")
-    public boolean deleteGame(@RequestHeader("gameName") String gameName, @RequestHeader("image") String imagen)
+    public boolean deleteGame(@RequestHeader("gameName") String gameName, @RequestHeader("X-Firebase-Auth") String token, @RequestHeader("image") String imagen)
             throws InterruptedException, ExecutionException {
-        return gameManageService.deleteGame(gameName, imagen);
+        return gameManageService.deleteGame(gameName, imagen, token);
     }
 
     @PutMapping("games/update/{Oldname}")
-    public boolean putMethodName(@PathVariable String Oldname, @RequestBody Games newGame)
+    public boolean putMethodName(@PathVariable String Oldname, @RequestBody Games newGame, @RequestHeader("X-Firebase-Auth") String token)
             throws InterruptedException, ExecutionException {
-        return gameManageService.updateGame(Oldname, newGame);
+        return gameManageService.updateGame(Oldname, newGame, token);
     }
 
     @GetMapping("games")
@@ -52,8 +53,8 @@ public class GameManageController {
     }
 
     @GetMapping("games/{name}")
-    public Games getGame(@PathVariable String name) throws InterruptedException, ExecutionException {
-        return gameManageService.getGame(name);
+    public Games getGame(@PathVariable String name, @RequestHeader("X-Firebase-Auth") String token) throws InterruptedException, ExecutionException {
+        return gameManageService.getGame(name, token);
     }
 
 }

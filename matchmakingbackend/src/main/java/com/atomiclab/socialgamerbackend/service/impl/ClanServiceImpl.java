@@ -100,6 +100,11 @@ public class ClanServiceImpl implements ClanService {
     public List<Clan> getMyClans(String token) throws InterruptedException, ExecutionException {
         String correo = firebaseSecAuth.getEmail(token);
         List<Clan> clans = new ArrayList<Clan>();
+        Query members = firebaseCrud.collectionGroupSearch("Miembros", "persona_id", correo);
+        ApiFuture<QuerySnapshot> querySnapshot = members.get();
+        for (DocumentSnapshot document2 : querySnapshot.get().getDocuments()) {
+            clans.add(document2.getReference().getParent().getParent().get().get().toObject(Clan.class));
+        }
         return clans;
     }
 

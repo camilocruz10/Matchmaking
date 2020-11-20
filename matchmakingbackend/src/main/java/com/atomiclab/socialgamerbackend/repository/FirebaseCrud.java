@@ -25,4 +25,5 @@ public interface FirebaseCrud {
         public String getIdWithUniqueField(String collectionUniqueValue, String collectionName) throws InterruptedException, ExecutionException;
         public String createVoidAndGetId(String collectionName);
         public Query collectionGroupSearch(String subCollection, String attributeName, String searchWord);
+        public void deleteCollection(CollectionReference collection, int batchSize);
 }
