@@ -32,7 +32,7 @@ public class GameManageServiceImpl implements GameManageService {
         if (!isAdmin(token)) return false;
         boolean deleteJuego = false, deleteImage = false;
         String id = firebaseCrud.getIdWithUniqueField(name, "Juego");
-        if (id != "") {
+        if (id != null) {
             deleteJuego = firebaseCrud.delete(id, "Juego");
         }
         if (deleteJuego == true) {
@@ -46,7 +46,7 @@ public class GameManageServiceImpl implements GameManageService {
         if (!isAdmin(token)) return false;
         boolean valor = false;
         String id = firebaseCrud.getIdWithUniqueField(Oldname, "Juego");
-        if (id != "") {
+        if (id != null) {
             valor = firebaseCrud.update(id, "Juego", newGame);
         }
         return valor;
@@ -57,7 +57,7 @@ public class GameManageServiceImpl implements GameManageService {
         if (!isAdmin(token)) return null;
         Games game = new Games();
         String id = firebaseCrud.getIdWithUniqueField(name, "Juego");
-        if (id != "") {
+        if (id != null) {
             game = firebaseCrud.getById("Juego", id).toObject(Games.class);
         }
         return game;
