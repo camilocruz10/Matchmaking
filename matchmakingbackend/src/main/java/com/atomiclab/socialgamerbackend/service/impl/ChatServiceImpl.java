@@ -29,7 +29,7 @@ public class ChatServiceImpl implements ChatService {
     FirebaseSecAuth firebaseSecAuth;
 
     public boolean createChat(Chat chat, String token) throws InterruptedException, ExecutionException {
-        chat = initializeChat(chat, "¡Ya puedes comenzar a chatear con tu amigo", token);
+        chat = initializeChat(chat, "¡Ya puedes comenzar a chatear con tu amigo!", token);
         return firebaseCrud.saveWithoutId("Chat", chat, "Mensajes", chat.getMensajes().get(0));
     }
 
@@ -61,6 +61,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     public boolean sendMessage(Mensaje msj, String chat_id) throws InterruptedException, ExecutionException {
+        msj.setFechayhora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        msj.setId(null);
         boolean b = firebaseCrud.saveSubCollection("Chat", chat_id, "Mensajes", msj);
         Chat updatedChat = firebaseCrud.getById("Chat", chat_id).toObject(Chat.class);
         updatedChat.setUltimomsj(msj.getFechayhora());

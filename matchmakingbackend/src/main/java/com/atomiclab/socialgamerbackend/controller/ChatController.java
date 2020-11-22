@@ -35,8 +35,6 @@ public class ChatController {
     @PostMapping("/chat/message")
     public boolean sendMessage(@RequestBody Mensaje msj, @RequestHeader("Chat-id") String chat_id,
             @RequestHeader("X-Firebase-Auth") String token) throws InterruptedException, ExecutionException {
-        msj.setFechayhora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        msj.setId(null);
         return chatService.sendMessage(msj, chat_id);
     }
 

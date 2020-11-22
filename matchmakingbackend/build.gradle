@@ -41,4 +41,11 @@ dependencies {
     compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.16.0'
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")
+    implementation 'org.junit.platform:junit-platform-console-standalone:1.7.0-M1'
 }
+
+
+test {
+    useJUnitPlatform()
+}
+
