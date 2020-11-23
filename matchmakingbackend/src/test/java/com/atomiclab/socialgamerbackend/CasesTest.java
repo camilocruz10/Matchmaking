@@ -37,8 +37,8 @@ public class CasesTest extends ApplicationTest{
     String dateForChats = "2020-11-21 02:17:53";
     List<String> integrantesMock = new ArrayList<>();
     List<Mensaje> mensajesMock = new ArrayList<>();
-    String token2 = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYwNzI0MDcsInVzZXJfaWQiOiJ4YkViaVRQMDlZWnRvakZPQWxZRGlwc3VDTnAyIiwic3ViIjoieGJFYmlUUDA5WVp0b2pGT0FsWURpcHN1Q05wMiIsImlhdCI6MTYwNjA3MjQwNywiZXhwIjoxNjA2MDc2MDA3LCJlbWFpbCI6ImNyYWNrbWlsbzEwQG1hdGNoLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjcmFja21pbG8xMEBtYXRjaC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DEdKYvDY1NvIg8XtA2GMXF2waBu5OAxnVbLl8dNxpldf44b4sFh4aiWPfe5pndQtJ5GDAsShcFejyBgn8ikgHDMK-tgjtcqBjQCvpSEUR7HWgsyscalasV5pr54eUVGGmtIGz-V8DQ8XnNPWZT0BNXDTYKV-bDfQRVjlThqkzqlRFVjIcJVc1cpk037YFaTUbub5stsgW1VmU-3xljxGfecYhTXs4b9TF08B2bYuTpkwx1BiJgpobMnIAoDhwRZjCFkidFGmOT5HIWBJ7S8Y-C_9HD7AuuE49F6kxY01M2f8aXjRlRrvBzNbQfT6kjCsJSb9wjVI-pGbVQZb9w48Cg";
-    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYwNzIzODksInVzZXJfaWQiOiJBZ0dvZHBFOXVWWVZDeHgwcVVhcE9leTNJU1kyIiwic3ViIjoiQWdHb2RwRTl1VllWQ3h4MHFVYXBPZXkzSVNZMiIsImlhdCI6MTYwNjA3MjM4OSwiZXhwIjoxNjA2MDc1OTg5LCJlbWFpbCI6ImNyYWNrbWlsb3Rlc3QxMEBtYXRjaC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiY3JhY2ttaWxvdGVzdDEwQG1hdGNoLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.gCUavKhhnxb-ZNAywTzpUaGYViO96eGl2-a64ZihRToCz-g7hrhMoQAuOAcxyOri1w2Hq9h4Oyq9FbGaIkIGMN0TdIF7Q0ASf35mPYigNauybu0rnGK6Q_6ZKHieuUl4dQmGxN-v3PlcWbrGyDywTdCISAuS3uYmpJ59M1orzRDlFwFvIUT-VnUlSq2gVF_RB-bUJy1p0YvI72ydb_lgDCzHl80kTpWSZwcrOdVMjqJPv5HPa06VZGzMK5jMpYTf_TckKH0jm7OiunQ1uVt0DllEc_L_ptMrYsnHh_W5qNI6wJr5YC9m-2SEgtH4NtHxBWlVczI4fZc83GAP4Ep3JQ";
+    String token2 = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYxNDk1NTUsInVzZXJfaWQiOiJ4YkViaVRQMDlZWnRvakZPQWxZRGlwc3VDTnAyIiwic3ViIjoieGJFYmlUUDA5WVp0b2pGT0FsWURpcHN1Q05wMiIsImlhdCI6MTYwNjE0OTU1NSwiZXhwIjoxNjA2MTUzMTU1LCJlbWFpbCI6ImNyYWNrbWlsbzEwQG1hdGNoLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjcmFja21pbG8xMEBtYXRjaC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.GGsHgFBTiIcACQhtFEM6KB3dM4kp2b4sk9_2qB0nnm49fOYSKVViecjA6SxVPyg97FhaL97AT4UavaX1N2FwFeZ8M8AlTfSLzUI3vjfJUEbwun073UysBlusoInwsokf-VHZziWbsO4tMwpKov42EKkxjX8zR6GbLNy2X9AeFeONK3Qr5DLuYLx1ZUc6mHxBlOMzht_g2C2KZo_3yjLMOtW5ab4ONskz3iXjctc9JRafT3Og1Wwus1GvLad4aNu_c016ZyGxz6DzkbwLw9Yw33uy3Cdqj7puRsQ2ku7eKYqFTDWXw8_yPYqX1cmqyw7vD8FVsoBucf37BXGjcRMzEA";
+    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYxNDk1MDcsInVzZXJfaWQiOiJBZ0dvZHBFOXVWWVZDeHgwcVVhcE9leTNJU1kyIiwic3ViIjoiQWdHb2RwRTl1VllWQ3h4MHFVYXBPZXkzSVNZMiIsImlhdCI6MTYwNjE0OTUwNywiZXhwIjoxNjA2MTUzMTA3LCJlbWFpbCI6ImNyYWNrbWlsb3Rlc3QxMEBtYXRjaC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiY3JhY2ttaWxvdGVzdDEwQG1hdGNoLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.N4zUZLbWKrlcVjpt4CGfb5igX-pon-LcCKGVyXi97VC3jImx9QQTjbTDW9oHTCpVuvRF6IjpUEE_thuRVCP9iVY0wMC_uuzUHNLAGwlCji6zcfpXR-redw_0ge_L7SUfwUdjXzwwp-VaoZPiuydRQjVIHq1ceEFmagTdVdd1fVxKTjV6hLi0Fo-0W-GrLyCFt1M01xRoW6dLXgy4f-zOjG36a3JDZ6pF1rjuENWtcmedl5Gu7azFvTqBPd3A5_4guYHT355c-0arjhw9G3gvWxXA15q8nZN4-eb_7-AM1p7VrNTqz9Jdg_-1RF3unGNTcJaka94uxyxeChFIIpfpGA";
     @Autowired
     ClanService clanService ;
     String nombreClan = "Clan_prueba";
@@ -65,36 +65,14 @@ public class CasesTest extends ApplicationTest{
     SquadsService squadsService ;
     @Autowired
     UserManageService userManageService ;
-    String tokenAdmin = "";
+    String tokenAdmin = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ";
     String profileToDelete = "profiletodelete@match.com";
     @Autowired
     UserService userService ;
     String fakeToken = "fakeToken";
     String fakeId = "fakeid";
     String fakeName = "fakenaem";
-/**
-    ClanServiceImpl clanService;
-    String nombreClan = "Clan_prueba";
-    @Autowired
-    FriendServiceImpl friendService;
-    String mockEmailMain3 = "crackrequest@match.com";
-    String mockUsernameMain3 = "crackreques";
-    String mockFotoPerfilMain3 = "Fotosperfil/1605942873659-Awesome-Love-Heart-3D-Wallpapers-Art.jpg";
-    String mockEmailMain4 = "camiloru007@gmail.com";
-    @Autowired
-    GameManageServiceImpl gameManageService;
-    String imagenJuegoMock = "Juegos/matchmaking1.png";
-    String juegoPrueba = "FIFA PRUEBA";
-    @Autowired
-    GamesServiceImpl gameService;
-    @Autowired
-    MatchmakingServiceImpl matchmakingService;
-    @Autowired
-    PostServiceImpl postService;
-    String idPublicacionMock = "crackmilotest10@match.com2020-11-22T00:09:46.999326500";
-    @Autowired
-    SearchServiceImpl searchService;
- */
+
     @org.junit.Test
     public void testGetChats() throws InterruptedException, ExecutionException, ParseException {
         List <Chat> chats = new ArrayList<>();
