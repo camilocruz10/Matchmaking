@@ -1,11 +1,11 @@
-package com.atomiclab.socialgamerbackend.test;
+package com.atomiclab.socialgamerbackend;
+
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,52 +13,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import com.atomiclab.socialgamerbackend.domain.model.Chat;
-import com.atomiclab.socialgamerbackend.domain.model.Clan;
-import com.atomiclab.socialgamerbackend.domain.model.Comment;
-import com.atomiclab.socialgamerbackend.domain.model.Games;
-import com.atomiclab.socialgamerbackend.domain.model.Matchmaking;
-import com.atomiclab.socialgamerbackend.domain.model.Mensaje;
-import com.atomiclab.socialgamerbackend.domain.model.Person;
-import com.atomiclab.socialgamerbackend.domain.model.Post;
-import com.atomiclab.socialgamerbackend.domain.model.Squad;
-import com.atomiclab.socialgamerbackend.domain.model.User;
-import com.atomiclab.socialgamerbackend.service.ChatService;
-import com.atomiclab.socialgamerbackend.service.ClanService;
-import com.atomiclab.socialgamerbackend.service.FriendService;
-import com.atomiclab.socialgamerbackend.service.GameManageService;
-import com.atomiclab.socialgamerbackend.service.GamesService;
-import com.atomiclab.socialgamerbackend.service.MatchmakingService;
-import com.atomiclab.socialgamerbackend.service.PostService;
-import com.atomiclab.socialgamerbackend.service.SearchService;
-import com.atomiclab.socialgamerbackend.service.SquadsService;
-import com.atomiclab.socialgamerbackend.service.UserManageService;
-import com.atomiclab.socialgamerbackend.service.UserService;
-import com.atomiclab.socialgamerbackend.service.impl.ChatServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.ClanServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.FriendServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.GameManageServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.GamesServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.MatchmakingServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.PostServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.SearchServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.SquadsServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.UserManageServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.UserServiceImpl;
+import com.atomiclab.socialgamerbackend.ApplicationTest;
+import com.atomiclab.socialgamerbackend.domain.model.*;
+import com.atomiclab.socialgamerbackend.service.*;
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+@RunWith(SpringJUnit4ClassRunner.class)
+public class CasesTest extends ApplicationTest{
 
-@SpringBootTest(classes = { ChatService.class, ClanService.class, FriendService.class, GameManageService.class,
-        GamesService.class, MatchmakingService.class, SearchService.class, SquadsService.class, UserManageService.class,
-        UserService.class })
-public class CasesTest {
     @Autowired
-    ChatService chatService ;
+    ChatService chatService;
     String mockEmail = "camiloru07@gmail.com";
     String mockEmailMain2 = "crackmilo@match.com";
     String mockUsernameMain2 = "crackmilo1999";
@@ -129,7 +95,7 @@ public class CasesTest {
     @Autowired
     SearchServiceImpl searchService;
  */
-    @Test
+    @org.junit.Test
     public void testGetChats() throws InterruptedException, ExecutionException, ParseException {
         List <Chat> chats = new ArrayList<>();
         Chat chat= new Chat ();
@@ -153,7 +119,7 @@ public class CasesTest {
         integrantesMock.clear();
         assertEquals(chatService.getChats(token), chats);
     }
-    @Test
+    @org.junit.Test
     public void testGetChatById() throws InterruptedException, ExecutionException, ParseException {
         Chat chat= new Chat ();
         Mensaje msj =new  Mensaje();
@@ -178,7 +144,7 @@ public class CasesTest {
     /* 
         Tests for clan
     */
-    @Test
+    @org.junit.Test
     public void testgetMembers() throws InterruptedException, ExecutionException {
         List <Person> persons = new ArrayList<>();
         Person person = new Person ();
@@ -188,7 +154,7 @@ public class CasesTest {
         persons.add(person);
         assertEquals(clanService.getMembers(nombreClan), persons);
     }
-    @Test
+    @org.junit.Test
     public void testGetPosts () throws InterruptedException, ExecutionException, ParseException {
         List<Post> posts = new ArrayList<>();
         Post post = new Post();
@@ -209,12 +175,12 @@ public class CasesTest {
         assertEquals(clanService.getPosts(nombreClan, token), posts);
     }
     
-    @Test
+    @org.junit.Test
     public void testGetClans() throws InterruptedException, ExecutionException {
         assertEquals(clanService.getClans().size(), 5);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetMyClans() throws InterruptedException, ExecutionException {
         Clan clan = new Clan ();
         clan.setNombre_clan("Clan_prueba");
@@ -229,7 +195,7 @@ public class CasesTest {
         assertEquals(clanService.getMyClans(token), clan);
     }
     
-    @Test
+    @org.junit.Test
     public void testGetRequests() throws InterruptedException, ExecutionException {
         List<Person> persons = new ArrayList<>();
         Person person = new Person ();
@@ -245,24 +211,24 @@ public class CasesTest {
      *  DeleteMember 
      */
 
-    @Test
+    @org.junit.Test
     public void testIsMember() throws InterruptedException, ExecutionException {
         assertEquals(clanService.isMember(token, nombreClan), true);
     }
 
-    @Test
+    @org.junit.Test
     public void testIsRequestSend() throws InterruptedException, ExecutionException {
         assertEquals(clanService.isRequestSend(token, nombreClan), false);
     }
     
-    @Test
+    @org.junit.Test
     public void testIsAdmin() throws InterruptedException, ExecutionException {
         assertEquals(clanService.isAdmin(token, nombreClan), true);
     }
     /*
      * Friends Requests 
      */
-    @Test
+    @org.junit.Test
     public void testGetFriendRequests() throws InterruptedException, ExecutionException {
         List<Person> persons = new ArrayList<>();
         Person person = new Person ();
@@ -273,12 +239,12 @@ public class CasesTest {
         assertEquals(friendService.getFriendRequests(token), persons);
     }
 
-    @Test
+    @org.junit.Test
     public void testIsFriend() throws InterruptedException, ExecutionException {
         assertEquals(friendService.isFriend(token, mockEmailMain2), true);
     }
 
-    @Test
+    @org.junit.Test
     public void testIsRequestSendFriend() throws InterruptedException, ExecutionException {
         assertEquals(friendService.isRequestSend(token, mockEmailMain3), true);
     }
@@ -288,7 +254,7 @@ public class CasesTest {
      */
     
 
-    @Test
+    @org.junit.Test
     public void testGetFriends() throws InterruptedException, ExecutionException {
         List<Person> persons = new ArrayList<>();
         Person person = new Person ();
@@ -307,7 +273,7 @@ public class CasesTest {
      * GameManageService tests
      */
 
-    @Test
+    @org.junit.Test
     public void testGetGame() throws InterruptedException, ExecutionException {
         Games game = new Games();
         game.setImagen(imagenJuegoMock);
@@ -317,7 +283,7 @@ public class CasesTest {
     
 
 
-    @Test
+    @org.junit.Test
     public void testIsAdminGameManage() throws InterruptedException, ExecutionException {
         assertEquals(gameManageService.isAdmin(token), false);
     }
@@ -326,13 +292,13 @@ public class CasesTest {
      * GamesServiceTests
      */
 
-    @Test
+    @org.junit.Test
     public void testGetGames() throws InterruptedException, ExecutionException {
         assertEquals(gameService.getGames().size(), 7);
     }
 
 
-    @Test
+    @org.junit.Test
     public void testGetFavorites() throws InterruptedException, ExecutionException {
         List <Games> games  = new ArrayList<>();
         Games game = new Games();
@@ -342,7 +308,7 @@ public class CasesTest {
         assertEquals(gameService.getFavorites(mockEmailMain),games);
     }
 
-    @Test
+    @org.junit.Test
     public void testFindMatchMaking() throws InterruptedException, ExecutionException {
         Matchmaking match = new Matchmaking();
         List<String> juegos = new ArrayList<>();
@@ -365,23 +331,23 @@ public class CasesTest {
         /**
          * SetFeed
          */
-    @Test
+    @org.junit.Test
     public void testGetFeed() throws InterruptedException, ExecutionException {
         assertEquals(postService.getFeed(token).size(), 1);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetComments() throws InterruptedException, ExecutionException {
         assertEquals(postService.getComments(idPublicacionMock, token).size(),1);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetLikesF() throws InterruptedException, ExecutionException {
         Integer i = 1;
         assertEquals(postService.getLikes(idPublicacionMock), i);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetPostsPosts() throws InterruptedException, ExecutionException {
         assertEquals(postService.getPosts(mockEmail).size(),1);
     }
@@ -390,24 +356,24 @@ public class CasesTest {
      * SearchServiceImpl
      */
 
-    @Test
+    @org.junit.Test
     public void testSearchUsers() throws InterruptedException, ExecutionException {
         assertEquals(searchService.searchUser("Persona","c").size(),6);
     }
 
-    @Test
+    @org.junit.Test
     public void testSearchGames() throws InterruptedException, ExecutionException {
         assertEquals(searchService.searchUser("Juego","COD").size(),2);
     }
-    @Test
+    @org.junit.Test
     public void testSearchPosts() throws InterruptedException, ExecutionException {
         assertEquals(searchService.searchPost("Publicaciones","algo").size(),1);
     }
-    @Test
+    @org.junit.Test
     public void testSearchClanes() throws InterruptedException, ExecutionException {
         assertEquals(searchService.searchClan("Clanes","_").size(),1);
     }
-    @Test
+    @org.junit.Test
     public void testSearchSquads() throws InterruptedException, ExecutionException {
         assertEquals(searchService.searchSquad("Squad","squad").size(),2);
     }
@@ -415,7 +381,7 @@ public class CasesTest {
     /**
      * SquadsServiceImpl
      */
-    @Test
+    @org.junit.Test
     public void testGetSquad() throws InterruptedException, ExecutionException {
         Squad squad = new Squad ();
         squad.setAdmin(mockEmailMain2);
@@ -433,7 +399,7 @@ public class CasesTest {
     }
     
     
-    @Test
+    @org.junit.Test
     public void testGetIntegrantes() throws InterruptedException, ExecutionException {
         Person person = new Person();
         List<Person> integrantes = new ArrayList<>();
@@ -444,7 +410,7 @@ public class CasesTest {
         assertEquals(squadsService.getIntegrantes("3lAILc7awa6S57laET0T"),integrantes);
     }
     
-    @Test
+    @org.junit.Test
     public void testFriendsSquads() throws InterruptedException, ExecutionException {
         Set<Squad> squads = new HashSet<>();
         Squad squad = new Squad ();
@@ -466,7 +432,7 @@ public class CasesTest {
     }
 
 
-    @Test
+    @org.junit.Test
     public void testGetSquads() throws InterruptedException, ExecutionException {
         List<Squad> squads = new ArrayList<>();
         Squad squad = new Squad ();
@@ -488,7 +454,7 @@ public class CasesTest {
     }
 
 
-    @Test
+    @org.junit.Test
     public void testGetInvitations() throws InterruptedException, ExecutionException {
         assertEquals(squadsService.getInvitations(token).size(),0);
     }
@@ -498,29 +464,29 @@ public class CasesTest {
      * 
      * UserManage
      */
-    @Test
+    @org.junit.Test
     public void testUnReportPost() throws InterruptedException, ExecutionException {
         assertEquals(userManageService.unreportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin),true);
     }
 
-    @Test
+    @org.junit.Test
     public void testUnReportProfile() throws InterruptedException, ExecutionException {
         assertEquals(userManageService.unreportPost("crackmilotest10@match.com", tokenAdmin),true);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetReportedPosts() throws InterruptedException, ExecutionException {
         assertEquals(userManageService.getReportedPosts(tokenAdmin).size(),5);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetReportedUsers() throws InterruptedException, ExecutionException {
         assertEquals(userManageService.getReportedUsers(tokenAdmin).size(),2);
     }
 
 
 
-    @Test
+    @org.junit.Test
     public void testIsAdminUserManage() throws InterruptedException, ExecutionException {
         assertEquals(userManageService.isAdmin(token),false);
     }
@@ -533,7 +499,7 @@ public class CasesTest {
 
 
 
-    @Test
+    @org.junit.Test
     public void testGetUser() throws InterruptedException, ExecutionException, ParseException {
         User user=new User();
         user.setNombres("crackmilo");
@@ -552,14 +518,14 @@ public class CasesTest {
         user.setPlataformas(plataformas);
         user.setRegion_id("Europa Nórdica y Este");
         user.setReportado(false);
-        assertEquals(userService.getUser("crackmilotest10@match.com"), true);
+        assertEquals(userService.getUser("crackmilotest10@match.com"), user);
     }
 
     public void testGetAllUsers() throws InterruptedException, ExecutionException, ParseException {
         assertEquals(userService.getAllUsers().size(), 14);
     }
 
-    @Test
+    @org.junit.Test
     public void testGetUserByToken() throws InterruptedException, ExecutionException, ParseException {
         User user=new User();
         user.setNombres("crackmilo");
@@ -578,18 +544,18 @@ public class CasesTest {
         user.setPlataformas(plataformas);
         user.setRegion_id("Europa Nórdica y Este");
         user.setReportado(false);
-        assertEquals(userService.getUserByToken(token), true);
+        assertEquals(userService.getUserByToken(token), user);
     }
 
 
 
-    @Test
+    @org.junit.Test
     public void testIsAdminUserService() throws InterruptedException, ExecutionException, ParseException {
         assertEquals(userService.isAdmin(tokenAdmin), true);
     }
 
     /* Tests that include a create or an addition    
-    @Test
+    @org.junit.Test
     public void testCreateChat() throws InterruptedException, ExecutionException {
         Chat chat = new Chat();
         List<String> inte = new ArrayList<>();
@@ -599,7 +565,7 @@ public class CasesTest {
         assertEquals(chatService.createChat(chat, token), true);
     }
 
-        @Test
+        @org.junit.Test
     public void testCreateClan() throws InterruptedException, ExecutionException {
         Clan clan = new Clan ();
         clan.setNombre_clan("Clan_prueba");
@@ -611,7 +577,7 @@ public class CasesTest {
     
     */
 
-//@Test
+//@org.junit.Test
 //public void testCreateChat() throws InterruptedException, ExecutionException {
 //    Chat chat = new Chat();
 //    List<String> inte = new ArrayList<>();
@@ -621,7 +587,7 @@ public class CasesTest {
 //    assertEquals(chatService.createChat(chat, token), true);
 //}
 
-//@Test
+//@org.junit.Test
 //public void testSendMessage() throws InterruptedException, ExecutionException {
 //    Mensaje msj = new Mensaje();
 //    msj.setFechayhora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
@@ -629,7 +595,7 @@ public class CasesTest {
 //    msj.setRemitente(mockEmail);
 //    assertEquals(chatService.sendMessage(msj, mockChatId), true);
 //}
-//@Test
+//@org.junit.Test
 //public void updateChat() throws InterruptedException, ExecutionException, ParseException {
 //    List <Chat> chats = new ArrayList<>();
 //    Chat chat= new Chat ();
@@ -653,7 +619,7 @@ public class CasesTest {
 //    integrantesMock.clear();
 //    assertEquals(chatService.updateChat(mockChatId,chat), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testCreateClan() throws InterruptedException, ExecutionException {
 //    Clan clan = new Clan ();
 //    clan.setNombre_clan("Clan_prueba");
@@ -663,7 +629,7 @@ public class CasesTest {
 //    assertEquals(clanService.createClan(clan, token), true);
 //}
 // error en el codigo
-//@Test
+//@org.junit.Test
 //public void testAddMemberClan() throws InterruptedException, ExecutionException {
 //    Person person = new Person ();
 //    person.setFoto_perfil(mockFotoPerfilMain2);
@@ -671,49 +637,49 @@ public class CasesTest {
 //    person.setPersona_id(mockEmailMain2);
 //    assertEquals(clanService.addMember(person, nombreClan, token), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testAddPostClan() throws InterruptedException, ExecutionException {
 //    Post post = new Post();
 //    post.setContenido("prueba");
 //    post.setImagen("imagen");
 //    assertEquals(clanService.addPost(post, nombreClan, token), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testRejectRequests() throws InterruptedException, ExecutionException {
 //    assertEquals(clanService.rejectRequest(mockEmailMain2, nombreClan,token), true);
 //}
-// @Test
+// @org.junit.Test
 // public void testAddFriend() throws InterruptedException, ExecutionException {
 //     assertEquals(friendService.addFriend(token, mockEmailMain3), true);
 // }
-//@Test
+//@org.junit.Test
 //public void testSendFriendRequest() throws InterruptedException, ExecutionException {
 //    assertEquals(friendService.sendFriendRequest(token, mockEmailMain4), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testDeleteFriend() throws InterruptedException, ExecutionException {
 //    friendService.addFriend(token, mockEmailMain4);
 //    assertEquals(friendService.deleteFriend(token, mockEmailMain4), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testCreateGame() throws InterruptedException, ExecutionException {
 //    Games game = new Games();
 //    game.setImagen(imagenJuegoMock);
 //    game.setNombre(juegoPrueba);
 //    assertEquals(gameManageService.createGame(game, token), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testUpdateGame() throws InterruptedException, ExecutionException {
 //    Games game = new Games();
 //    game.setImagen("Juegos/carro.png");
 //    game.setNombre("Updated Game");
 //    assertEquals(gameManageService.updateGame(juegoPrueba, game, token), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testDeleteGame() throws InterruptedException, ExecutionException {
 //    assertEquals(gameManageService.deleteGame("Updated Game", "Juegos/carro.png", token), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testSetGames() throws InterruptedException, ExecutionException {
 //    List <Games> games  = new ArrayList<>();
 //    Games game = new Games();
@@ -722,25 +688,25 @@ public class CasesTest {
 //    games.add(game);
 //    assertEquals(gameService.setGames(token,games), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testUploadPost() throws InterruptedException, ExecutionException {
 //    Post post = new Post();
 //    post.setContenido("contenido");
 //    post.setImagen("Publicaciones/1601513801553-436-don-arbolon-cuentos-para-ninos.jpg");
 //    assertEquals(postService.uploadPost(post, token), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testMakeComments() throws InterruptedException, ExecutionException {
 //    Comment comment = new Comment();
 //    comment.setComentario("comentario prueba");
 //    comment.setPublicacion_id(idPublicacionMock);
 //    assertEquals(postService.makeComment(token,comment), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testLike() throws InterruptedException, ExecutionException {
 //    assertEquals(postService.like(idPublicacionMock, token),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testCreateSquads() throws InterruptedException, ExecutionException {
 //    Squad squad = new Squad ();
 //    squad.setNombre("prueba squa");
@@ -748,7 +714,7 @@ public class CasesTest {
 //    assertEquals(squadsService.createSquad(squad, token), true);
 //}
 //
-//@Test
+//@org.junit.Test
 //public void testUpdateSquads() throws InterruptedException, ExecutionException {
 //    Squad squad = new Squad ();
 //    squad.setAdmin(mockEmailMain2);
@@ -759,18 +725,18 @@ public class CasesTest {
 //    squad.setImagen("Squads/Awesome-Love-Heart-3D-Wallpapers-Art.jpg");
 //    assertEquals(squadsService.updateSquad(squad), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testDeleteSquads() throws InterruptedException, ExecutionException {
 //    assertEquals(squadsService.deleteSquad("3lAILc7awa6S57laET0T"), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testSendInvitations() throws InterruptedException, ExecutionException {
 //    List<String> invitations = new ArrayList<>();
 //    invitations.add(mockEmailMain3);
 //    invitations.add(mockEmailMain4);
 //    assertEquals(squadsService.sendInvitations(invitations, token,"Nuevo squad","3lAILc7awa6S57laET0T"),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testExitSquad() throws InterruptedException, ExecutionException {
 //    Squad squad = new Squad ();
 //    squad.setAdmin(mockEmailMain2);
@@ -788,7 +754,7 @@ public class CasesTest {
 //    squad.setIntegrantes(integrantes);
 //    assertEquals(squadsService.exitSquad(token, squad),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testAcceptInvite() throws InterruptedException, ExecutionException {
 //    Squad squad = new Squad ();
 //    squad.setAdmin(mockEmailMain2);
@@ -799,7 +765,7 @@ public class CasesTest {
 //    squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
 //    assertEquals(squadsService.acceptInvite(token,squad,mockEmailMain2),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testJoinSquad() throws InterruptedException, ExecutionException {
 //    Squad squad = new Squad ();
 //    squad.setAdmin(mockEmailMain2);
@@ -810,15 +776,15 @@ public class CasesTest {
 //    squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
 //    assertEquals(squadsService.joinSquad(token,squad),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testDeletePost() throws InterruptedException, ExecutionException {
 //    assertEquals(userManageService.deletePost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testDeleteProfile() throws InterruptedException, ExecutionException {
 //    assertEquals(userManageService.deleteProfile(profileToDelete,tokenAdmin),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testRegister() throws InterruptedException, ExecutionException, ParseException {
 //    User user=new User();
 //    user.setNombres("Nombre registro");
@@ -838,7 +804,7 @@ public class CasesTest {
 //    user.setRegion_id("Brasil");
 //    assertEquals(userService.register(user),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testUpdateProfile() throws InterruptedException, ExecutionException, ParseException {
 //    User user=new User();
 //    user.setNombres("Nombre registro updated");
@@ -858,19 +824,19 @@ public class CasesTest {
 //    user.setRegion_id("Brasil");
 //    assertEquals(userService.updateProfile(user,token),true);
 //}
-//@Test
+//@org.junit.Test
 //public void testReportProfile() throws InterruptedException, ExecutionException, ParseException {
 //    assertEquals(userService.reportProfile(mockEmailMain3), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testReportPost() throws InterruptedException, ExecutionException, ParseException {
 //    assertEquals(userService.reportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500"), true);
 //}
-//@Test
+//@org.junit.Test
 //public void testAddRequests() throws InterruptedException, ExecutionException {
 //    assertEquals(clanService.addRequests(nombreClan, token2), true);
 //}
-//@Test
+//@org.junit.Test
 //public void deleteMember() throws InterruptedException, ExecutionException {
 //    assertEquals(clanService.deleteMember(mockEmailMain2, nombreClan, token));
 //}
