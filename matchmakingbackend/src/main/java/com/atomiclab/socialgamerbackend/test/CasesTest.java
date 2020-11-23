@@ -1,7 +1,6 @@
-package com.atomiclab.socialgamerbackend.tests.java;
+package com.atomiclab.socialgamerbackend.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,8 +45,8 @@ import com.atomiclab.socialgamerbackend.service.impl.SearchServiceImpl;
 import com.atomiclab.socialgamerbackend.service.impl.SquadsServiceImpl;
 import com.atomiclab.socialgamerbackend.service.impl.UserManageServiceImpl;
 import com.atomiclab.socialgamerbackend.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -57,7 +56,6 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootTest(classes = { ChatService.class, ClanService.class, FriendService.class, GameManageService.class,
         GamesService.class, MatchmakingService.class, SearchService.class, SquadsService.class, UserManageService.class,
         UserService.class })
-    @ImportAutoConfiguration
 public class CasesTest {
     @Autowired
     ChatService chatService ;
@@ -377,11 +375,10 @@ public class CasesTest {
         assertEquals(postService.getComments(idPublicacionMock, token).size(),1);
     }
 
-    
-
     @Test
-    public void testGetLikes() throws InterruptedException, ExecutionException {
-        assertEquals(postService.getLikes(idPublicacionMock),1);
+    public void testGetLikesF() throws InterruptedException, ExecutionException {
+        Integer i = 1;
+        assertEquals(postService.getLikes(idPublicacionMock), i);
     }
 
     @Test
@@ -877,4 +874,7 @@ public class CasesTest {
 //public void deleteMember() throws InterruptedException, ExecutionException {
 //    assertEquals(clanService.deleteMember(mockEmailMain2, nombreClan, token));
 //}
+
+    
+
 }
