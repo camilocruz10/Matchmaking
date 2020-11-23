@@ -1,12 +1,11 @@
-package com.atomiclab.socialgamerbackend.tests.java;
+package com.atomiclab.socialgamerbackend.servicesTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,53 +13,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import com.atomiclab.socialgamerbackend.domain.model.Chat;
-import com.atomiclab.socialgamerbackend.domain.model.Clan;
-import com.atomiclab.socialgamerbackend.domain.model.Comment;
-import com.atomiclab.socialgamerbackend.domain.model.Games;
-import com.atomiclab.socialgamerbackend.domain.model.Matchmaking;
-import com.atomiclab.socialgamerbackend.domain.model.Mensaje;
-import com.atomiclab.socialgamerbackend.domain.model.Person;
-import com.atomiclab.socialgamerbackend.domain.model.Post;
-import com.atomiclab.socialgamerbackend.domain.model.Squad;
-import com.atomiclab.socialgamerbackend.domain.model.User;
-import com.atomiclab.socialgamerbackend.service.ChatService;
-import com.atomiclab.socialgamerbackend.service.ClanService;
-import com.atomiclab.socialgamerbackend.service.FriendService;
-import com.atomiclab.socialgamerbackend.service.GameManageService;
-import com.atomiclab.socialgamerbackend.service.GamesService;
-import com.atomiclab.socialgamerbackend.service.MatchmakingService;
-import com.atomiclab.socialgamerbackend.service.PostService;
-import com.atomiclab.socialgamerbackend.service.SearchService;
-import com.atomiclab.socialgamerbackend.service.SquadsService;
-import com.atomiclab.socialgamerbackend.service.UserManageService;
-import com.atomiclab.socialgamerbackend.service.UserService;
-import com.atomiclab.socialgamerbackend.service.impl.ChatServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.ClanServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.FriendServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.GameManageServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.GamesServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.MatchmakingServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.PostServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.SearchServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.SquadsServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.UserManageServiceImpl;
-import com.atomiclab.socialgamerbackend.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
+import com.atomiclab.socialgamerbackend.ApplicationTest;
+import com.atomiclab.socialgamerbackend.domain.model.*;
+import com.atomiclab.socialgamerbackend.service.*;
 
-@SpringBootTest(classes = { ChatService.class, ClanService.class, FriendService.class, GameManageService.class,
-        GamesService.class, MatchmakingService.class, SearchService.class, SquadsService.class, UserManageService.class,
-        UserService.class })
-    @ImportAutoConfiguration
-public class CasesTest {
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class CasesTest extends ApplicationTest{
+
     @Autowired
-    ChatService chatService ;
+    ChatService chatService;
     String mockEmail = "camiloru07@gmail.com";
     String mockEmailMain2 = "crackmilo@match.com";
     String mockUsernameMain2 = "crackmilo1999";
