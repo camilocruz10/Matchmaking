@@ -53,7 +53,7 @@ dependencies {
 
 appengine {  // App Engine tasks configuration
   deploy {   // deploy configuration
-    projectId = 'spring-course-c4e5a'
-    version = '1'
+    projectId = 'GCLOUD_CONFIG' // delegate to project in gcloud config
+    version = 'GCLOUD_CONFIG'   // delegate to gcloud to generate a version
   }
 }
