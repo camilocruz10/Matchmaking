@@ -53,7 +53,7 @@ dependencies {
 
 appengine {  // App Engine tasks configuration
   deploy {   // deploy configuration
-    projectId = System.getenv('Matchmaking')
+    projectId = 'spring-course-c4e5a'
     version = '1'
   }
 }
