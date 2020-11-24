@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 /**
- * Este servicio maneja la l�gica relacionada al usuario.
+ * Este servicio maneja la l�gica relacionada al usuario.
  * @author Atomic Lab
  * @version 1.0
  */
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     FirebaseStorage firebaseStorage;
     /**
-     * Recibe un objeto User y lo a�ade a la base de datos.
+     * Recibe un objeto User y lo a�ade a la base de datos.
      * @param user Objeto de tipo usuario
      * @return boolean que retorna si se realizo correctamente o no
      */
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         return firebaseCrud.save(user.getCorreo(), "Persona", user);
     }
     /**
-     * Recibe un objeto User y el token de autenticaci�n del usuario, con esto actualiza los campos dl usuario relacionados con ese token.
+     * Recibe un objeto User y el token de autenticaci�n del usuario, con esto actualiza los campos dl usuario relacionados con ese token.
      * @param user Objeto de tipo usuario
      * @param token String con el token del usuario
      * @return boolean que retorna si se realizo correctamente o no
@@ -104,35 +104,55 @@ public class UserServiceImpl implements UserService {
     }
     /**
      * Recibe una imagen, el nombre de la carpeta donde se debe guardar y sube dicho archivo al Storage
-     * @param multipartFile
-     * @param folder
-     * @return
+     * @param multipartFile Objeto de tipo Multipart
+     * @param folder Nombre de la carpeta donde se va a guardar
+     * @return El nombre de la ubicación donde se guardo
      * @throws IOException 
      */
     @Override
     public String uploadFile(MultipartFile multipartFile, String folder) throws IOException {
         return firebaseStorage.uploadFile(multipartFile, folder);
     }
-
+    /**
+     * Recibe la ruta de un archivo y descarga dicho archivo del Storage
+     * @param file Nombre del archivo
+     * @return El nombre de la ubicación donde se guardo
+     * @throws Exception
+     */
     @Override
     public String downloadFile(String file) throws Exception {
         return firebaseStorage.downloadFile(file);
     }
-
+    /**
+     * Recibe el identificador de un usuario y cambia su estado a “reportado”
+     * @param id identificador del usuario a reportar
+     * @return boolean que confirma si el metodo se realizo con exito o no
+     * @throws ExecutionException
+     */
     @Override
     public boolean reportProfile(String id) throws InterruptedException, ExecutionException {
         User user = firebaseCrud.getById("Persona", id).toObject(User.class);
         user.setReportado(true);
         return firebaseCrud.update(id, "Persona", user);
     }
-
+    /**
+     * Recibe el identificador de un post y cambia su estado a “reportado”
+     * @param id identificador del post a reportar
+     * @return boolean que confirma si el metodo se realizo con exito o no
+     * @throws ExecutionException
+     */
     @Override
     public boolean reportPost(String id) throws InterruptedException, ExecutionException {
         Post post = firebaseCrud.getById("Publicaciones", id).toObject(Post.class);
         post.setReportado(true);
         return firebaseCrud.update(id, "Publicaciones", post);
     }
-
+    /**
+     * Recibe el token de autenticación y retorna si el usuario es administrador.
+     * @param token String con el token del usuario
+     * @return boolean que confirma si el metodo se realizo con exito o no
+     * @throws ExecutionException
+     */
     @Override
     public boolean isAdmin(String token) throws InterruptedException, ExecutionException {
         DocumentSnapshot doc = firebaseCrud.getById("Administradores", firebaseSecAuth.getUid(token));
