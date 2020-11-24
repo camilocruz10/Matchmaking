@@ -54,11 +54,9 @@ public class SquadsServiceImpl implements SquadsService {
                 Person personAux = firebaseCrud.getById("Persona", firebaseSecAuth.getEmail(token))
                         .toObject(Person.class);
                 personAux.setPersona_id(firebaseSecAuth.getEmail(token));
-                if (personAux != null) {
-                    collectionIntegrantes.add(personAux);
-                    persons.add(personAux);
-                    squad.setIntegrantes(persons);
-                }
+                collectionIntegrantes.add(personAux);
+                persons.add(personAux);
+                squad.setIntegrantes(persons);
             }
 
         }
@@ -72,12 +70,23 @@ public class SquadsServiceImpl implements SquadsService {
         return false;
     }
 
-    public boolean deleteSquad(String squadId) throws InterruptedException, ExecutionException {
-        Squad squad = firebaseCrud.getById("Squad", squadId).toObject(Squad.class);
-        if (squad != null) {
-            firebaseCrud.delete(squad.getChat_id(), "Chat");
+    public boolean deleteSquad(Squad squad) throws InterruptedException, ExecutionException {
+        boolean isChatdeleted = false, isSquadDeleted = false;
+        String idMemberToDelete = firebaseCrud.getSubCollection("Squad", squad.getId_squad(), "Integrantes").get()
+                .get().getDocuments().get(0).getId();
+        firebaseCrud.deleteInSubCollection(squad.getId_squad(), "Squad", idMemberToDelete, "Integrantes");
+        isChatdeleted = chatService.deleteChat(squad.getChat_id());
+        if (isChatdeleted){
+            Query unrespondedInvitations = firebaseCrud.getCollection("InvitacionesSquads").whereEqualTo("idSquad",squad.getId_squad());
+            for (DocumentSnapshot doc : unrespondedInvitations.get().get().getDocuments()){
+                if (doc != null){
+                    doc.getReference().delete();
+                }
+            }
+            firebaseStorage.deleteFile(squad.getImagen());
+            isSquadDeleted = firebaseCrud.delete(squad.getId_squad(), "Squad");
         }
-        return firebaseCrud.delete(squadId, "Squad");
+        return isChatdeleted && isSquadDeleted;
     }
 
     @Override
@@ -106,6 +115,8 @@ public class SquadsServiceImpl implements SquadsService {
             RequestSquad request = new RequestSquad();
             if (integrante != null) {
                 Person personAux = firebaseCrud.getById("Persona", integrante).toObject(Person.class);
+                personAux.setPersona_id(integrante);
+                personAuxMyself.setPersona_id(firebaseSecAuth.getEmail(token));
                 request.setRemitente(personAuxMyself);
                 request.setReceptor(personAux);
                 request.setNombreSquad(nombreSquad);
@@ -264,11 +275,7 @@ public class SquadsServiceImpl implements SquadsService {
                 updateChat = firebaseCrud.update(squad.getChat_id(), "Chat", chat);
             }
         } else {
-            String idMemberToDelete = firebaseCrud.getSubCollection("Squad", squad.getId_squad(), "Integrantes").get()
-                    .get().getDocuments().get(0).getId();
-            firebaseCrud.deleteInSubCollection(squad.getId_squad(), "Squad", idMemberToDelete, "Integrantes");
-            delete = deleteSquad(squad.getId_squad());
-            updateChat = firebaseCrud.delete(squad.getChat_id(), "Chat");
+            return deleteSquad(squad);
         }
 
         return delete && updateChat;
@@ -277,7 +284,7 @@ public class SquadsServiceImpl implements SquadsService {
     @Override
     public List<RequestSquad> getInvitations(String token) throws InterruptedException, ExecutionException {
         List<RequestSquad> myInvitationsList = new ArrayList<>();
-        Query myInvitations = firebaseCrud.getCollection("InvitacionesSquad").whereEqualTo("receptor",
+        Query myInvitations = firebaseCrud.getCollection("InvitacionesSquads").whereEqualTo("receptor.persona_id",
                 firebaseSecAuth.getEmail(token));
         for (DocumentSnapshot doc : myInvitations.get().get().getDocuments()) {
             if (doc != null) {
@@ -288,17 +295,27 @@ public class SquadsServiceImpl implements SquadsService {
     }
 
     @Override
-    public boolean acceptInvite(String token, Squad squad, String remitenteId)
-            throws InterruptedException, ExecutionException {
+    public boolean acceptInvite(RequestSquad requestSquad, String token)
+    throws InterruptedException, ExecutionException {
+        Squad squad = firebaseCrud.getById("Squad", requestSquad.getIdSquad()).toObject(Squad.class);
         boolean membersSaved = joinSquad(token, squad);
         boolean invitationDeleted = false;
         if (membersSaved == true) {
-            String invitationId = getInvitationId(token, squad.getId_squad(), remitenteId);
+            String invitationId = getInvitationId(token, squad.getId_squad(), requestSquad.getRemitente().getPersona_id());
             if (invitationId != null) {
                 invitationDeleted = firebaseCrud.delete(invitationId, "InvitacionesSquads");
             }
         }
         return membersSaved && invitationDeleted;
+    }
+    @Override
+    public boolean declineInvite(RequestSquad requestSquad, String token)
+            throws InterruptedException, ExecutionException {
+        String invitationId = getInvitationId(token, requestSquad.getIdSquad(), requestSquad.getRemitente().getPersona_id());
+        if (invitationId != null) {
+            return firebaseCrud.delete(invitationId, "InvitacionesSquads");
+        }
+        return false;
     }
 
     public String getInvitationId(String token, String squadId, String remitenteId)
@@ -308,8 +325,8 @@ public class SquadsServiceImpl implements SquadsService {
         for (DocumentSnapshot doc : allSquadsInvitations) {
             if (doc != null) {
                 RequestSquad aux = doc.toObject(RequestSquad.class);
-                if (aux.getRemitente().equals(remitenteId)
-                        && aux.getReceptor().equals(firebaseSecAuth.getEmail(token))) {
+                if (aux.getRemitente().getPersona_id().equals(remitenteId)
+                        && aux.getReceptor().getPersona_id().equals(firebaseSecAuth.getEmail(token))) {
                     return doc.getId();
                 }
             }
@@ -334,5 +351,22 @@ public class SquadsServiceImpl implements SquadsService {
             }
         }
         return membersSaved && chatUpdated;
+    }
+
+    @Override
+    public boolean kickFromSquad(String personId, Squad squad, String token)
+            throws InterruptedException, ExecutionException {
+        String idMember = "";
+        System.out.println(personId);
+        System.out.println(squad.getId_squad());
+        if (squad.getAdmin().equals(firebaseSecAuth.getEmail(token))){
+            Query query = firebaseCrud.getSubCollection("Squad", squad.getId_squad(), "Integrantes").whereEqualTo("persona_id", personId);
+            int quantity = query.get().get().getDocuments().size(); 
+            if (quantity > 0){
+                idMember = query.get().get().getDocuments().get(0).getId();
+                return firebaseCrud.deleteInSubCollection(squad.getId_squad(), "Squad", idMember, "Integrantes");
+            }
+        }
+        return false;
     }
 }
