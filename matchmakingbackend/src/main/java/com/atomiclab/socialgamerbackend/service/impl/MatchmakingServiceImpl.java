@@ -19,14 +19,24 @@ import com.google.cloud.firestore.QuerySnapshot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * Es el servicio que se encarga de manejar la lógica de MatchMaking
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public class MatchmakingServiceImpl implements MatchmakingService {
     @Autowired
     FirebaseCrud firebaseCrud;
     @Autowired
     FirebaseSecAuth firebaseSecAuth;
-
+    /**
+     * Permite crear el objeto en la base de datos con el usuario
+     * @param matchmaking Objeto de tipo matchmaking 
+     * @param token String con el token del usuario
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public void create(Matchmaking matchmaking, String token) throws InterruptedException, ExecutionException {
         String correo = firebaseSecAuth.getEmail(token);
@@ -35,6 +45,13 @@ public class MatchmakingServiceImpl implements MatchmakingService {
         matchmaking.setPerson(person);
         firebaseCrud.save("Matchmaking", matchmaking);
     }
+    /**
+     * filtra todos los match con otros usuarios
+     * @param matchmaking Objeto de tipo Matchmaking
+     * @return List<Matchmaking> lista con dichos matchs
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Matchmaking> findMatch(Matchmaking matchmaking) throws InterruptedException, ExecutionException {
         List<Matchmaking> matchs = new ArrayList<Matchmaking>();
@@ -54,6 +71,12 @@ public class MatchmakingServiceImpl implements MatchmakingService {
         }
         return matchs;
     }
+    /**
+     * Eliminar todos los objetos Matchmaking de ese usuario.
+     * @param token String con el token del usuario
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public void delete(String token) throws InterruptedException, ExecutionException {
         String correo = firebaseSecAuth.getEmail(token);

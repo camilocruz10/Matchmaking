@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FirebaseServiceImpl implements FirebaseService {
-
+    /**
+     * inicia la conexión con la base de datos mediante el json 
+     * @throws IOException 
+     */
   @PostConstruct
   private void init() throws IOException {
     FileInputStream serviceAccount = new FileInputStream("spring-course-c4e5a-firebase-adminsdk-f0nr3-9a6cff1a6f.json");
@@ -29,10 +32,18 @@ public class FirebaseServiceImpl implements FirebaseService {
       FirebaseApp.initializeApp(options);
     }
   }
+  /**
+   * instancia con conexión al servicio de autenticación propio de Firebase.
+   * @return instancia de la conexión
+   */
   @Override
   public FirebaseAuth getFirebasAuth() {
     return FirebaseAuth.getInstance();
   }
+  /**
+   * instancia con conexión al servicio de base de datos (Firestore) propio de Firebase
+   * @return la instancia con conexión al servicio de base de datos
+   */
   @Override
   public Firestore getFirestore() {
     return FirestoreClient.getFirestore();

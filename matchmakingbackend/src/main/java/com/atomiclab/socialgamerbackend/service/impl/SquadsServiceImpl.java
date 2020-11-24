@@ -25,7 +25,11 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * Es el servicio que maneja la lógica de los grupos privados (squads), que además tienen chat grupal y videollamadas
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public class SquadsServiceImpl implements SquadsService {
 
@@ -39,7 +43,14 @@ public class SquadsServiceImpl implements SquadsService {
     FriendService friendService;
     @Autowired
     ChatService chatService;
-
+    /**
+     * crear el objeto en la base de datos
+     * @param squad Objeto squad
+     * @param token String con el token del usuario
+     * @return Squad un objeto Squad con sus respectivos atributos
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     public Squad createSquad(Squad squad, String token) throws InterruptedException, ExecutionException {
         String chatId = chatService.createChatSquads(token);
         List<Person> persons = new ArrayList<>();
@@ -66,14 +77,26 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return squad;
     }
-
+    /**
+     * actualizar los campos en la base de datos.
+     * @param squad Objeto squad
+     * @return boolean que confirma si se pudo actualizar o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     public boolean updateSquad(Squad squad) throws InterruptedException, ExecutionException {
         if (squad.getIntegrantes().size() <= 8) {
             return firebaseCrud.update(squad.getId_squad(), "Squad", squad);
         }
         return false;
     }
-
+    /**
+     * Elimina un squad de la base de datos
+     * @param squadId Identificador del Squad
+     * @return boolean que confirma si se pudo eliminar o no 
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     public boolean deleteSquad(String squadId) throws InterruptedException, ExecutionException {
         Squad squad = firebaseCrud.getById("Squad", squadId).toObject(Squad.class);
         if (squad != null) {
@@ -81,7 +104,13 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return firebaseCrud.delete(squadId, "Squad");
     }
-
+    /**
+     * Retorna un squad de la base de datos
+     * @param squadId Identificador del Squad
+     * @return boolean que confirma si se pudo eliminar o no 
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public Squad getSquad(String squadId) throws InterruptedException, ExecutionException {
         Squad squad = firebaseCrud.getById("Squad", squadId).toObject(Squad.class);
@@ -97,7 +126,16 @@ public class SquadsServiceImpl implements SquadsService {
         squad.setIntegrantes(integrantesToJoinSquad);
         return squad;
     }
-
+    /**
+     * creará una invitación a cada usuario para unirse.
+     * @param integrantes Lista de los integrantes que quiere invitar
+     * @param token String con el token del usuario
+     * @param nombreSquad nombre del Squad
+     * @param idSquad Identificador del squad
+     * @return boolean que confirma si se pudo eliminar o no 
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean sendInvitations(List<String> integrantes, String token, String nombreSquad, String idSquad)
             throws InterruptedException, ExecutionException {
@@ -123,7 +161,13 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return false;
     }
-
+    /**
+     * Retorna la lista de integrantes de un Squad
+     * @param squadId Identificador de un squad
+     * @return Lista de inegrantes de un squad
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Person> getIntegrantes(String squadId) throws InterruptedException, ExecutionException {
         DocumentSnapshot doc = firebaseCrud.getById("Squad", squadId);
@@ -141,7 +185,13 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return integrantes;
     }
-
+    /**
+     * Retorna la lista de squads creados por amigos a partir del token de autenticación.
+     * @param token String con el token del usuario
+     * @return lista de aquads creados por amigos
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public Set<Squad> getFriendsSquads(String token) throws InterruptedException, ExecutionException {
         List<String> friendsId = new ArrayList<>();
@@ -154,7 +204,14 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return friendsSquads;
     }
-
+    /**
+     * Retorna la lista de squads con la que esta un amigo y el usuario
+     * @param friendId Identificador del amigo
+     * @param myEmail Email del usuario que hace la petición
+     * @return Lista de squads donde pertenece el usuario y el amigo
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     public List<Squad> getFriendSquads(String friendId, String myEmail)
             throws InterruptedException, ExecutionException {
         CollectionReference collection = firebaseCrud.getCollection("Squad");
@@ -189,7 +246,13 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return friendsSquads;
     }
-
+    /**
+     * Retorna la lista de squads propios
+     * @param token String con el token del usuario
+     * @return Lista de squads del usuario
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Squad> getMySquads(String token) throws InterruptedException, ExecutionException {
         CollectionReference collection = firebaseCrud.getCollection("Squad");
@@ -222,7 +285,12 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return mySquads;
     }
-
+    /**
+     * Saber si el usuario pertenece o no a un Squad
+     * @param integrantesDocs Integrantes de un squad
+     * @param myEmail email del usuario para verificar si esta o no
+     * @return boolean que confirma si es o no miembro de un squad
+     */
     public boolean imInTheSquad(List<QueryDocumentSnapshot> integrantesDocs, String myEmail) {
         for (DocumentSnapshot doc : integrantesDocs) {
             if (doc != null) {
@@ -234,7 +302,14 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return false;
     }
-
+    /**
+     * Saca al usuario del squad
+     * @param token String con el token del usuario
+     * @param squad Objeto squad
+     * @return boolean que confirma si lo eliminaron o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean exitSquad(String token, Squad squad) throws InterruptedException, ExecutionException {
         List<QueryDocumentSnapshot> query = firebaseCrud.getSubCollection("Squad", squad.getId_squad(), "Integrantes")
@@ -278,7 +353,13 @@ public class SquadsServiceImpl implements SquadsService {
 
         return delete && updateChat;
     }
-
+    /**
+     * lista de invitaciones para unirse a un squad que tiene un usuario 
+     * @param token String con el token del usuario
+     * @return Lista de invitaciones que tiene el usuario
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<RequestSquad> getInvitations(String token) throws InterruptedException, ExecutionException {
         List<RequestSquad> myInvitationsList = new ArrayList<>();
@@ -291,7 +372,15 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return myInvitationsList;
     }
-
+    /**
+     * con este añade al usuario al squad y elimina la solicitud de la base de datos
+     * @param token String con el token del usuario
+     * @param squad Objeto de tipo squad
+     * @param remitenteId Identificador del remitente
+     * @return boolean que confirma si se pudo realizar el procedimiento o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean acceptInvite(String token, Squad squad, String remitenteId)
             throws InterruptedException, ExecutionException {
@@ -305,7 +394,15 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return membersSaved && invitationDeleted;
     }
-
+    /**
+     * 
+     * @param token String con el token del usuario
+     * @param squadId Identificador del squad
+     * @param remitenteId Identificador del remitente
+     * @return Invitaciones de un squad en especifico
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     public String getInvitationId(String token, String squadId, String remitenteId)
             throws InterruptedException, ExecutionException {
         List<QueryDocumentSnapshot> allSquadsInvitations = firebaseCrud.getCollection("InvitacionesSquads")
@@ -321,7 +418,14 @@ public class SquadsServiceImpl implements SquadsService {
         }
         return null;
     }
-
+    /**
+     * Une a una persona al squad haciendo uso de su token de autenticación y el objeto squad al que se quiere unir.
+     * @param token String con el token del usuario
+     * @param squad Objeto de tipo squad
+     * @return boolean que confirma si se pudo realizar el metodo o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean joinSquad(String token, Squad squad) throws InterruptedException, ExecutionException {
         Person myself = firebaseCrud.getById("Persona", firebaseSecAuth.getEmail(token)).toObject(Person.class);

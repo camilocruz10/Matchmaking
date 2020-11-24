@@ -10,7 +10,11 @@ import com.atomiclab.socialgamerbackend.domain.model.Squad;
 import com.atomiclab.socialgamerbackend.domain.model.User;
 
 import org.springframework.stereotype.Service;
-
+/**
+ * Lista de los servicios de SearchService
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public interface SearchService {
 

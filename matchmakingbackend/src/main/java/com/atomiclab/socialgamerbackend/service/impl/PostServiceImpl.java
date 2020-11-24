@@ -23,14 +23,24 @@ import com.google.cloud.firestore.Query.Direction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * Es el servicio que maneja las publicaciones hechas por un usuario en la red social.
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public class PostServiceImpl implements PostService {
     @Autowired
     FirebaseCrud firebaseCrud;
     @Autowired
     FirebaseSecAuth firebaseSecAuth;
-
+    /**
+     * Modificar un post en especifico del feed
+     * @param post Objeto de tipo post
+     * @param token String con el token del usuario
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     private void setFeed(Post post, String token) throws InterruptedException, ExecutionException {
 	String correo = firebaseSecAuth.getEmail(token);
         CollectionReference collection = firebaseCrud.getCollection("Amigos");
@@ -44,7 +54,14 @@ public class PostServiceImpl implements PostService {
         }
 	firebaseCrud.saveSubCollection("Persona", correo, "Feed", post);
     }
-
+    /**
+     * método debe subir una publicación a la base de datos
+     * @param post Objeto de un tipo post
+     * @param token String con el token del usuario
+     * @return boolean que confirma si se realizo el metodo o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean uploadPost(Post post, String token) throws InterruptedException, ExecutionException {
         String correo = firebaseSecAuth.getEmail(token);
@@ -58,7 +75,13 @@ public class PostServiceImpl implements PostService {
         setFeed(post, token);
         return firebaseCrud.save(id, "Publicaciones", post);
     }
-
+    /**
+     * Obtiene la lista de todos los posts en el feed de un usuario
+     * @param token String con el token del usuario
+     * @return Lista de posts del feed
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Post> getFeed(String token) throws InterruptedException, ExecutionException {
         List<Post> feed = new ArrayList<Post>();
@@ -70,7 +93,14 @@ public class PostServiceImpl implements PostService {
         }
         return feed;
     }
-
+    /**
+     * obtiene la lista de todos los comentarios del post seleccionado, solo si este está en su feed.
+     * @param idPublicacion Identificador de la publicación
+     * @param token String con el token del usuario
+     * @return Lista de comenrarios de la publicación
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Comment> getComments(String idPublicacion, String token)
             throws InterruptedException, ExecutionException {
@@ -82,7 +112,14 @@ public class PostServiceImpl implements PostService {
         }
         return comments;
     }
-
+    /**
+     * sube este comentario a la base de datos.
+     * @param token String con el token del usuario
+     * @param comment Objeto de tipo comentario
+     * @return boolean que confirma si se realizó el metodo o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean makeComment(String token, Comment comment) throws InterruptedException, ExecutionException {
         String correo = firebaseSecAuth.getEmail(token);
@@ -92,20 +129,39 @@ public class PostServiceImpl implements PostService {
         comment.setFecha(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         return firebaseCrud.save("Comentarios", comment);
     }
-
+    /**
+     * suma un like a dicha publicación.
+     * @param idPublicacion identificador de la publicación
+     * @param token String con el token del usuario
+     * @return boolean que confirma si se realizó el metodo o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean like(String idPublicacion, String token) throws InterruptedException, ExecutionException {
         Reaction reaction = new Reaction(firebaseSecAuth.getEmail(token), idPublicacion);
         return firebaseCrud.save("Reacciones", reaction);
     }
-
+    /**
+     * Obtener el total de likes de dicha publicación.
+     * @param idPublicacion identificador de una publicación
+     * @return Número con la cantidad total de likes
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public Integer getLikes(String idPublicacion) throws InterruptedException, ExecutionException {
         CollectionReference collection = firebaseCrud.getCollection("Reacciones");
         Query requestsQuery = collection.whereEqualTo("publicacion_id", idPublicacion);
         return requestsQuery.get().get().getDocuments().size();
     }
-
+    /**
+     * obtiene publicaciones de un usuario
+     * @param correo identificador del usuario
+     * @return Lista de publicaciones de un usuario
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Post> getPosts(String correo) throws InterruptedException, ExecutionException {
         List<Post> posts = new ArrayList<Post>();

@@ -21,11 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/play")
+
 public class ChatController {
 
     @Autowired
     ChatService chatService;
-
+    
+    /**
+    * Esta clase es muy bonita
+    * @param numero Numero requerido
+    * @return boolean si funciono o no
+    */
     @PostMapping("/chat/create")
     public boolean createChat(@RequestBody Chat chat, @RequestHeader("X-Firebase-Auth") String token)
             throws InterruptedException, ExecutionException {

@@ -19,14 +19,24 @@ import com.google.cloud.firestore.QuerySnapshot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * Este servicio se encarga de manejar la lógica relacionada con la gestión de solicitudes de amistad
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public class FriendServiceImpl implements FriendService {
     @Autowired
     FirebaseCrud firebaseCrud;
     @Autowired
     FirebaseSecAuth firebaseSecAuth;
-
+    /**
+     * busca las solicitudes de amistad que ha recibido ese usuario
+     * @param token String con el token del usuario
+     * @return Lista de las personas con las solicitudes
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Person> getFriendRequests(String token) throws InterruptedException, ExecutionException {
         List<Person> requestsList = new ArrayList<Person>();
@@ -38,7 +48,14 @@ public class FriendServiceImpl implements FriendService {
         }
         return requestsList;
     }
-
+    /**
+     * Metodo que verifica si una persona es amigo o no
+     * @param token String con el token del usuario
+     * @param friendId Identificador del amigo
+     * @return boolean dependiendo de si existe registro de que sean amigos en la base de datos.
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean isFriend(String token, String friendId) throws InterruptedException, ExecutionException {
         CollectionReference collection = firebaseCrud.getCollection("Amigos");
@@ -50,7 +67,14 @@ public class FriendServiceImpl implements FriendService {
             .whereEqualTo("persona1", friendId);
         return !requestsQuery1.get().get().isEmpty() || !requestsQuery2.get().get().isEmpty();
     }
-
+    /**
+     * Verifica si un usuario le mando una solicitud o no
+     * @param token String con el token del usuario
+     * @param friendId Identificador del amigo
+     * @return boolean dependiendo de si existe registro de que sean amigos en la base de datos.
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean isRequestSend(String token, String friendId) throws InterruptedException, ExecutionException {
         Query requestsQuery = firebaseCrud.getCollection("Solicitudes")
@@ -59,7 +83,14 @@ public class FriendServiceImpl implements FriendService {
         ApiFuture<QuerySnapshot> querySnapshot = requestsQuery.get();
         return !querySnapshot.get().getDocuments().isEmpty();
     }
-
+    /**
+     * esto acepta la solicitud de amistad del otro usuario añadiendo un objeto Friend a la colección de amigos
+     * @param token String con el token del usuario
+     * @param friendId Identificador del amigo
+     * @return boolean de si se realizo el metodo con exito o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean addFriend(String token, String friendId) throws InterruptedException, ExecutionException {
         Query requestsQuery = firebaseCrud.getCollection("Solicitudes")
@@ -72,7 +103,13 @@ public class FriendServiceImpl implements FriendService {
         Friend friends = new Friend(firebaseSecAuth.getEmail(token), friendId);
         return firebaseCrud.save("Amigos", friends);
     }
-
+    /**
+     * Rechazar petición de solicitud de amistad de un amigo
+     * @param token String con el token del usuario
+     * @param friendId Identificador del amigo
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public void rejectFriend(String token, String friendId) throws InterruptedException, ExecutionException {
         Query requestsQuery = firebaseCrud.getCollection("Solicitudes")
@@ -83,7 +120,14 @@ public class FriendServiceImpl implements FriendService {
             firebaseCrud.delete(document.getId(), "Solicitudes");
         }
     }
-
+    /**
+     * envia la solicitud de amistad al otro usuario añadiendo un objeto Request a la colección de solicitudes 
+     * @param token String con el token del usuario
+     * @param friendId Identificador del amigo
+     * @return boolean de si se realizó con exito o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean sendFriendRequest(String token, String friendId) throws InterruptedException, ExecutionException {
         Request request = new Request();
@@ -93,7 +137,14 @@ public class FriendServiceImpl implements FriendService {
         request.setPerson(person);
         return firebaseCrud.save("Solicitudes", request);
     }
-
+    /**
+     * elimina el documento que representa dicha amistad de la colección amigos 
+     * @param token String con el token del usuario
+     * @param friendId Identificador del amigo
+     * @return boolean de si se realizó con exito o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean deleteFriend(String token, String friendId) throws InterruptedException, ExecutionException {
         CollectionReference collection = firebaseCrud.getCollection("Amigos");
@@ -112,7 +163,14 @@ public class FriendServiceImpl implements FriendService {
         }
         return true;
     }
-
+    /**
+     * retorna una lista con todos los amigos de esa persona.
+     * @param token String con el token del usuario
+     * @param id identificadot de la persona
+     * @return Lista de personas que son amigos a el
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Person> getFriends(String token, String id) throws InterruptedException, ExecutionException {
         List<Person> friends = new ArrayList<Person>();
