@@ -1,6 +1,7 @@
 package com.atomiclab.socialgamerbackend.service.impl;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +21,14 @@ public class FirebaseServiceImpl implements FirebaseService {
 
   @PostConstruct
   private void init() throws IOException {
-    FileInputStream serviceAccount = new FileInputStream("spring-course-c4e5a-firebase-adminsdk-f0nr3-9a6cff1a6f.json");
+    FileInputStream serviceAccount;
+    try {
+      serviceAccount = new FileInputStream("spring-course-c4e5a-firebase-adminsdk-f0nr3-9a6cff1a6f.json");
+    } catch (FileNotFoundException e) {
+      serviceAccount = new FileInputStream("WEB-INF/classes/spring-course-c4e5a-firebase-adminsdk-f0nr3-9a6cff1a6f.json");
+      e.printStackTrace();
+    }
+    System.out.println(serviceAccount.toString());
     FirebaseOptions options = new FirebaseOptions.Builder()
         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
         .setDatabaseUrl("https://spring-course-c4e5a.firebaseio.com")
