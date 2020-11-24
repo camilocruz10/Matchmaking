@@ -107,8 +107,6 @@ public class UserManageServiceImpl implements UserManageService {
         for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
             document.getReference().delete();
         }
-        //Hacer despues
-        int cambiar_admin_del_clan;
         requestsQuery = firebaseCrud.getCollection("Comentarios").whereEqualTo("person.persona_id", id);
         querySnapshot = requestsQuery.get();
         for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
