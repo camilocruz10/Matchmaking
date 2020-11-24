@@ -20,7 +20,11 @@ import com.google.cloud.firestore.WriteResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * Este servicio maneja la lógica relacionada a la gestión de usuarios dentro del sistema, solo los administradores pueden acceder a sus funcionalidades 
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public class UserManageServiceImpl implements UserManageService {
     @Autowired
@@ -29,21 +33,38 @@ public class UserManageServiceImpl implements UserManageService {
     FirebaseSecAuth firebaseSecAuth;
     @Autowired
     FirebaseStorage firebaseStorage;
-
+    /**
+     * Recibe la identificación del post reportado y el token de autenticación del usuario, con esto valida que sea un administrador y cambia el estado del post a no reportado.
+     * @param id identificador del post que se quiere cancelar el reporte
+     * @return boolean de si el metodo se realizo con exito
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean unreportPost(String id) throws InterruptedException, ExecutionException {
         Post post = firebaseCrud.getById("Publicaciones", id).toObject(Post.class);
         post.setReportado(false);
         return firebaseCrud.update(id, "Publicaciones", post);
     }
-
+    /**
+     * Recibe la identificación del usuario reportado y el token de autenticación del usuario, con esto valida que sea un administrador y cambia el estado del usuario a no reportado.
+     * @param id identificación del usuario reportado
+     * @return boolean de si el metodo se realizo con exito
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean unreportProfile(String id) throws InterruptedException, ExecutionException {
         User user = firebaseCrud.getById("Persona", id).toObject(User.class);
         user.setReportado(false);
         return firebaseCrud.update(id, "Persona", user);
     }
-
+    /**
+     * Recibe el token de autenticación del usuario, con esto valida que administrador y retorna toda la lista de usuarios reportados
+     * @return Lista de personas reportadas
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Person> getReportedUsers() throws InterruptedException, ExecutionException {
         List<Person> persons = new ArrayList<Person>();
@@ -58,7 +79,12 @@ public class UserManageServiceImpl implements UserManageService {
         }
         return persons;
     }
-
+    /**
+     * Recibe el token de autenticación del usuario, con esto valida que administrador y retorna toda la lista de posts reportados
+     * @return Lista de posts
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public List<Post> getReportedPosts() throws InterruptedException, ExecutionException {
         List<Post> posts = new ArrayList<Post>();
@@ -70,7 +96,13 @@ public class UserManageServiceImpl implements UserManageService {
         }
         return posts;
     }
-
+    /**
+     * Recibe la identificación del post y el token de autenticación del usuario, con esto valida que sea un administrador y elimina el post de la colección de publicaciones y de todas las sub-colecciones Feed que hay en el sistema. 
+     * @param id identificacion del post a eliminar
+     * @return boolean de si el metodo se realizo con exito
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean deletePost(String id) throws InterruptedException, ExecutionException {
         ApiFuture<WriteResult> writeResult = firebaseCrud.getCollection("Publicacines").document(id).delete();
@@ -79,7 +111,13 @@ public class UserManageServiceImpl implements UserManageService {
         }
         return false;
     }
-
+    /**
+     * Recibe la identificación del usuario reportado y el token de autenticación del usuario, con esto valida que sea un administrador y elimina al usuario de la colección de usuarios, toda la información relacionada a él, como amigos, likes, etc y de todas las publicaciones del usuario. 
+     * @param id identificación del perfil que se va a eliminar
+     * @return boolean que retorna si el metodo funciono o no
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
     @Override
     public boolean deleteProfile(String id) throws InterruptedException, ExecutionException {
         ApiFuture<WriteResult> writeResult = firebaseCrud.getCollection("Persona").document(id).delete();

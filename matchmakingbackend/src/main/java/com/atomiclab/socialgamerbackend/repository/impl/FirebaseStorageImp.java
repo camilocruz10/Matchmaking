@@ -23,12 +23,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
-
+/**
+ * Este servicio maneja los métodos relacionados al almacenamiento de archivos en el servicio de Storage
+ * @author Atomic Lab
+ * @version 1.0
+ */
 @Service
 public class FirebaseStorageImp implements FirebaseStorage {
     @Autowired
     StorageService storageService;
-
+    /**
+     * Recibe un multipart file y la dirección en que se guardara este archivo
+     * @param multipartFile Objeto de tipo multipart
+     * @param folder Nombre de la carpeta donde se va a a subir
+     * @return La dirección del archivo
+     * @throws IOException 
+     */
     @Override
     public String uploadFile(MultipartFile multipartFile, String folder) throws IOException {
         String bucketName = "spring-course-c4e5a.appspot.com";
@@ -41,7 +51,12 @@ public class FirebaseStorageImp implements FirebaseStorage {
         storage.create(blobInfo, Files.readAllBytes(filePath));
         return folder.concat(objectName);
     }
-
+    /**
+     * Recibe la dirección en que se guardó este archivo y retorna un string con la lista de byte de la imagen codificada en base64
+     * @param fileName ubicación del archivo
+     * @return retorna la imagen codificada
+     * @throws Exception 
+     */
     @Override
     public String downloadFile(String fileName) throws Exception {
 
