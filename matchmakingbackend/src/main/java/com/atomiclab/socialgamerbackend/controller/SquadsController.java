@@ -44,11 +44,6 @@ public class SquadsController {
         return squadsService.updateSquad(squad);
     }
 
-    @DeleteMapping("/squads/delete/{squadName}")
-    public boolean deleteSquad(@PathVariable String squadName) throws InterruptedException, ExecutionException {
-        return squadsService.deleteSquad(squadName);
-    }
-
     @GetMapping("/squads/{squadId}")
     public Squad getSquad(@PathVariable String squadId) throws InterruptedException, ExecutionException {
         return squadsService.getSquad(squadId);
@@ -84,9 +79,15 @@ public class SquadsController {
     }
 
     @PutMapping("squads/acceptInvite")
-    public boolean acceptInvite(@RequestHeader("X-Firebase-Auth") String token, @RequestBody Squad squad,
-            @RequestHeader("remitenteId") String remitenteId) throws InterruptedException, ExecutionException {
-        return squadsService.acceptInvite(token, squad, remitenteId);
+    public boolean acceptInvite(@RequestBody RequestSquad requestSquad, @RequestHeader("X-Firebase-Auth") String token)
+            throws InterruptedException, ExecutionException {
+        return squadsService.acceptInvite(requestSquad, token);
+    }
+
+    @PutMapping("squads/declineInvitation")
+    public boolean declineInvitation(@RequestBody RequestSquad requestSquad, @RequestHeader("X-Firebase-Auth") String token) 
+            throws InterruptedException, ExecutionException {
+        return squadsService.declineInvite(requestSquad, token);
     }
 
     @PutMapping("squads/join")
@@ -95,4 +96,9 @@ public class SquadsController {
         return squadsService.joinSquad(token, squad);
     }
 
+    @PutMapping("squads/dump/{personId:.+}")
+    public boolean kickFromSquad (@RequestHeader("X-Firebase-Auth") String token, @PathVariable String personId, @RequestBody Squad squad)
+            throws InterruptedException, ExecutionException {
+        return squadsService.kickFromSquad(personId, squad, token);
+    }
 }
