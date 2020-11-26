@@ -19,7 +19,7 @@ public interface SquadsService {
 
         public boolean updateSquad(Squad squad) throws InterruptedException, ExecutionException;
 
-        public boolean deleteSquad(String squadId) throws InterruptedException, ExecutionException;
+        public boolean deleteSquad(Squad squad) throws InterruptedException, ExecutionException;
 
         public Squad getSquad(String squadId) throws InterruptedException, ExecutionException;
 
@@ -33,8 +33,13 @@ public interface SquadsService {
 
         public List<RequestSquad> getInvitations(String token) throws InterruptedException, ExecutionException;
 
-        public boolean acceptInvite(String token, Squad squad, String remitenteId)
+        public boolean acceptInvite(RequestSquad requestSquad, String token)
                         throws InterruptedException, ExecutionException;
 
         public boolean joinSquad(String token, Squad squad) throws InterruptedException, ExecutionException;
+
+        public boolean declineInvite(RequestSquad requestSquad, String token)
+                        throws InterruptedException, ExecutionException;
+
+        public boolean kickFromSquad(String personId, Squad squad, String token)throws InterruptedException, ExecutionException;
 }

@@ -47,8 +47,7 @@ dependencies {
     compile "org.junit.platform:junit-platform-commons:1.6.0"
     testCompile "org.junit.platform:junit-platform-engine:1.6.0"
 }
-
-
 test {
     useJUnitPlatform()
+    testLogging.showStandardStreams true
 }

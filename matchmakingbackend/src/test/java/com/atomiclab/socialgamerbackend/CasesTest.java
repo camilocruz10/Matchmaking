@@ -6,6 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -25,8 +27,8 @@ public class CasesTest extends ApplicationTest{
 
     @Autowired
     ChatService chatService;
-    String mockEmail = "camiloru07@gmail.com";
-    String mockEmailMain2 = "crackmilo@match.com";
+    String mockEmail = "camiloru007@gmail.com";
+    String mockEmailMain2 = "crackmilo10@match.com";
     String mockUsernameMain2 = "crackmilo1999";
     String mockFotoPerfilMain2 = "Fotosperfil/1605942873659-Awesome-Love-Heart-3D-Wallpapers-Art.jpg";
     String mockEmailMain = "crackmilotest10@match.com";
@@ -37,8 +39,8 @@ public class CasesTest extends ApplicationTest{
     String dateForChats = "2020-11-21 02:17:53";
     List<String> integrantesMock = new ArrayList<>();
     List<Mensaje> mensajesMock = new ArrayList<>();
-    String token2 = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYxNDk1NTUsInVzZXJfaWQiOiJ4YkViaVRQMDlZWnRvakZPQWxZRGlwc3VDTnAyIiwic3ViIjoieGJFYmlUUDA5WVp0b2pGT0FsWURpcHN1Q05wMiIsImlhdCI6MTYwNjE0OTU1NSwiZXhwIjoxNjA2MTUzMTU1LCJlbWFpbCI6ImNyYWNrbWlsbzEwQG1hdGNoLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjcmFja21pbG8xMEBtYXRjaC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.GGsHgFBTiIcACQhtFEM6KB3dM4kp2b4sk9_2qB0nnm49fOYSKVViecjA6SxVPyg97FhaL97AT4UavaX1N2FwFeZ8M8AlTfSLzUI3vjfJUEbwun073UysBlusoInwsokf-VHZziWbsO4tMwpKov42EKkxjX8zR6GbLNy2X9AeFeONK3Qr5DLuYLx1ZUc6mHxBlOMzht_g2C2KZo_3yjLMOtW5ab4ONskz3iXjctc9JRafT3Og1Wwus1GvLad4aNu_c016ZyGxz6DzkbwLw9Yw33uy3Cdqj7puRsQ2ku7eKYqFTDWXw8_yPYqX1cmqyw7vD8FVsoBucf37BXGjcRMzEA";
-    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYxNDk1MDcsInVzZXJfaWQiOiJBZ0dvZHBFOXVWWVZDeHgwcVVhcE9leTNJU1kyIiwic3ViIjoiQWdHb2RwRTl1VllWQ3h4MHFVYXBPZXkzSVNZMiIsImlhdCI6MTYwNjE0OTUwNywiZXhwIjoxNjA2MTUzMTA3LCJlbWFpbCI6ImNyYWNrbWlsb3Rlc3QxMEBtYXRjaC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiY3JhY2ttaWxvdGVzdDEwQG1hdGNoLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.N4zUZLbWKrlcVjpt4CGfb5igX-pon-LcCKGVyXi97VC3jImx9QQTjbTDW9oHTCpVuvRF6IjpUEE_thuRVCP9iVY0wMC_uuzUHNLAGwlCji6zcfpXR-redw_0ge_L7SUfwUdjXzwwp-VaoZPiuydRQjVIHq1ceEFmagTdVdd1fVxKTjV6hLi0Fo-0W-GrLyCFt1M01xRoW6dLXgy4f-zOjG36a3JDZ6pF1rjuENWtcmedl5Gu7azFvTqBPd3A5_4guYHT355c-0arjhw9G3gvWxXA15q8nZN4-eb_7-AM1p7VrNTqz9Jdg_-1RF3unGNTcJaka94uxyxeChFIIpfpGA";
+    String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjlhZDBjYjdjMGY1NTkwMmY5N2RjNTI0NWE4ZTc5NzFmMThkOWM3NjYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYzODE0MzAsInVzZXJfaWQiOiJBZ0dvZHBFOXVWWVZDeHgwcVVhcE9leTNJU1kyIiwic3ViIjoiQWdHb2RwRTl1VllWQ3h4MHFVYXBPZXkzSVNZMiIsImlhdCI6MTYwNjM4MTQzMCwiZXhwIjoxNjA2Mzg1MDMwLCJlbWFpbCI6ImNyYWNrbWlsb3Rlc3QxMEBtYXRjaC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiY3JhY2ttaWxvdGVzdDEwQG1hdGNoLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.Zgpi5SCrwvGYldtt2XYFEkSK3ztiaKKn7oW3ncCtRUoFxFOdNnudgG-4Jejqc65fu_ynnWu7V4rHnZUSXyo30dlYZnad2_vwaa0dwHeDdIQo_tkWTn0D2uxEDFtzUI26gSHjLRtrL5wbsBhXKbi_HB2COVqkHsbizwl2HCCoqKCnF3aC4QQXYaPXKy6XRgDr1mudcybiku8f4TfzXEaASBgSumkZZWH9SYgEvDKehpZg678AXo1pfVwTAb7JJ3Uk7GrtTxZBFdIBit4itogIOmTaX2mKM4QTJuG3kXxOR_lgm9-v87alklsbuC9mAybVH5VJzjkCyl8BL00VQF8W1Q";
+    String token2 = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjlhZDBjYjdjMGY1NTkwMmY5N2RjNTI0NWE4ZTc5NzFmMThkOWM3NjYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYzODA4MTMsInVzZXJfaWQiOiJ4YkViaVRQMDlZWnRvakZPQWxZRGlwc3VDTnAyIiwic3ViIjoieGJFYmlUUDA5WVp0b2pGT0FsWURpcHN1Q05wMiIsImlhdCI6MTYwNjM4MDgxMywiZXhwIjoxNjA2Mzg0NDEzLCJlbWFpbCI6ImNyYWNrbWlsbzEwQG1hdGNoLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjcmFja21pbG8xMEBtYXRjaC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DCRBlmrp77ychtTXgMgG04AEJt-O-0suianzJCrqoriRptdvcI9Q8FHg8Rw056vO_DBfw62P2F4qCosqmc2t-81UmbLW0KkeEh-ZftK5WMzjQ_APPQmzOl7Tm0UxdtP9YoUfLAuM870nxfyq2PuBYCjDna7DiioEfoHE5LXXf0fXnG7z9MlXmul58Pg1rgQglcNgBLY6f7ftgrqwUedsIeIaghgeGo9ra3UGO5uHQ1GAFIIntNnfIVcL8GatlcaGcZxjLJm1MFRTjWKwMQ95AF7n19UQ7gq5ow2FQeZ_iAaqcnTVE81nC6-9P-Q_4hK5HoxRaD8g-2P11GK3Q0hj1w";
     @Autowired
     ClanService clanService ;
     String nombreClan = "Clan_prueba";
@@ -51,7 +53,7 @@ public class CasesTest extends ApplicationTest{
     @Autowired
     GameManageService gameManageService  ;
     String imagenJuegoMock = "Juegos/matchmaking1.png";
-    String juegoPrueba = "FIFA PRUEBA";
+    String juegoPrueba = "COD Modern Warface";
     @Autowired
     GamesService gameService;
     @Autowired
@@ -65,7 +67,7 @@ public class CasesTest extends ApplicationTest{
     SquadsService squadsService ;
     @Autowired
     UserManageService userManageService ;
-    String tokenAdmin = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNlNTQyN2NkMzUxMDhiNDc2NjUyMDhlYTA0YjhjYTZjODZkMDljOTMiLCJ0eXAiOiJKV1QifQ";
+    String tokenAdmin = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjlhZDBjYjdjMGY1NTkwMmY5N2RjNTI0NWE4ZTc5NzFmMThkOWM3NjYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3ByaW5nLWNvdXJzZS1jNGU1YSIsImF1ZCI6InNwcmluZy1jb3Vyc2UtYzRlNWEiLCJhdXRoX3RpbWUiOjE2MDYzNzUxMTksInVzZXJfaWQiOiJDMmFVNHN1Rjl2ZDU3ZE16NVhxNDkxUkxrdkwyIiwic3ViIjoiQzJhVTRzdUY5dmQ1N2RNejVYcTQ5MVJMa3ZMMiIsImlhdCI6MTYwNjM3NTExOSwiZXhwIjoxNjA2Mzc4NzE5LCJlbWFpbCI6ImNhbWlsb3J1MDA3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImNhbWlsb3J1MDA3QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.EsVxecI69rTaIISyrlj6qk5wDkLjy6GxJgVuw2cqaYJwVP49Tecr8HECLwxSnKedYDE9dlKoMN84HO-b39upVM6AbmZHsyT5XvXgD_R_P6tJlra5gASlQq2_cfH9ueTdpCngC3MvbV6-Kv-P5gXQAUxX-TRIgFCKcdKRl31zlcy5IUMvLCeA2J-OJoQdpNEQCvj6Bw1hvc1IKXNwNwapRe9g5l0_zSpjn1lGoVr9ib9TsiRlzo3t45xAlzDf9j__dssAdrPHc2XyE4K9VxfXPe7UWTa4DnEVnhXpFRtgFNDbeaFnaZ9JqGAq1iF8EOsST1fBFFzCwiiBhmc2ktBSBA";
     String profileToDelete = "profiletodelete@match.com";
     @Autowired
     UserService userService ;
@@ -95,7 +97,7 @@ public class CasesTest extends ApplicationTest{
         chat.setUltimomsj(result);
         chats.add(chat);
         integrantesMock.clear();
-        assertEquals(chatService.getChats(token), chats);
+        assertEquals(chats.size(),chatService.getChats(token).size());
     }
     @org.junit.Test
     public void testGetChatById() throws InterruptedException, ExecutionException, ParseException {
@@ -107,17 +109,17 @@ public class CasesTest extends ApplicationTest{
         chat.setIntegrantes(integrantesMock);
         msj.setId(mockMsjId);
         msj.setMensaje("!Ya puedes comenzar a chatear con tu amigo");
-        msj.setRemitente(mockEmailMain2);
+        msj.setRemitente(mockEmailMain);
         Date result = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         result  = dateFormat.parse(dateForChats);
         msj.setFechayhora(result);
         mensajesMock.add(msj);
-        mensajesMock.clear();
         chat.setMensajes(mensajesMock);
+        mensajesMock.clear();
         chat.setUltimomsj(result);
         integrantesMock.clear();
-        assertEquals(chatService.getChatById(mockChatId), chat);
+        assertEquals(chat.getId(),chatService.getChatById(mockChatId).getId());
     }
     /* 
         Tests for clan
@@ -130,7 +132,7 @@ public class CasesTest extends ApplicationTest{
         person.setNombre_usuario(mockUsernameMain);
         person.setFoto_perfil("Fotosperfil/1605942759382-graicas_faryd.png");
         persons.add(person);
-        assertEquals(clanService.getMembers(nombreClan), persons);
+        assertEquals(persons,clanService.getMembers(nombreClan));
     }
     @org.junit.Test
     public void testGetPosts () throws InterruptedException, ExecutionException, ParseException {
@@ -142,35 +144,37 @@ public class CasesTest extends ApplicationTest{
         person.setPersona_id(mockEmailMain);
         post.setPerson(person);
         post.setReportado(false);
-        post.setContenido("prueba");
+        post.setContenido("buenaaas");
         Date result;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        result  = dateFormat.parse("2020-11-21 02:17:53 ???");
+        result  = dateFormat.parse("2020-11-25 20:33:58");
         post.setFecha(result);
-        post.setId("dfghj");
-        post.setImagen("imagen");
+        post.setId("crackmilotest10@match.com2020-11-25T20:33:58.132800800");
+        post.setImagen("");
         posts.add(post);
-        assertEquals(clanService.getPosts(nombreClan, token), posts);
+        assertEquals(posts.get(0).getId(),clanService.getPosts(nombreClan, token).get(0).getId());
     }
     
     @org.junit.Test
     public void testGetClans() throws InterruptedException, ExecutionException {
-        assertEquals(clanService.getClans().size(), 5);
+        assertEquals(5,clanService.getClans().size());
     }
 
     @org.junit.Test
     public void testGetMyClans() throws InterruptedException, ExecutionException {
+        List<Clan> clanes = new ArrayList<>();
         Clan clan = new Clan ();
         clan.setNombre_clan("Clan_prueba");
         clan.setDescripcion("Este es un clan de prueba");
-        clan.setEsPrivado(false);
+        clan.setEsPrivado(true);
         clan.setFoto_clan("Clanes/1605948415996-luk.png");
         Person person = new Person ();
         person.setFoto_perfil(mockFotoPerfilMain);
         person.setNombre_usuario(mockUsernameMain);
         person.setPersona_id(mockEmailMain);
         clan.setPerson(person);
-        assertEquals(clanService.getMyClans(token), clan);
+        clanes.add(clan);
+        assertEquals(clanes,clanService.getMyClans(token));
     }
     
     @org.junit.Test
@@ -181,7 +185,7 @@ public class CasesTest extends ApplicationTest{
         person.setNombre_usuario(mockUsernameMain2);
         person.setPersona_id(mockEmailMain2);
         persons.add(person);
-        assertEquals(clanService.getRequests(nombreClan, token), persons);
+        assertEquals(0,clanService.getRequests(nombreClan, token).size());
     }
 
 
@@ -191,17 +195,17 @@ public class CasesTest extends ApplicationTest{
 
     @org.junit.Test
     public void testIsMember() throws InterruptedException, ExecutionException {
-        assertEquals(clanService.isMember(token, nombreClan), true);
+        assertEquals(true, clanService.isMember(token, nombreClan));
     }
 
     @org.junit.Test
     public void testIsRequestSend() throws InterruptedException, ExecutionException {
-        assertEquals(clanService.isRequestSend(token, nombreClan), false);
+        assertEquals(false,clanService.isRequestSend(token, nombreClan));
     }
     
     @org.junit.Test
     public void testIsAdmin() throws InterruptedException, ExecutionException {
-        assertEquals(clanService.isAdmin(token, nombreClan), true);
+        assertEquals(true, clanService.isAdmin(token, nombreClan));
     }
     /*
      * Friends Requests 
@@ -214,17 +218,17 @@ public class CasesTest extends ApplicationTest{
         person.setNombre_usuario(mockUsernameMain3);
         person.setPersona_id(mockEmailMain3);
         persons.add(person);
-        assertEquals(friendService.getFriendRequests(token), persons);
+        assertEquals(persons.get(0).getPersona_id(),friendService.getFriendRequests(token).get(0).getPersona_id());
     }
 
     @org.junit.Test
     public void testIsFriend() throws InterruptedException, ExecutionException {
-        assertEquals(friendService.isFriend(token, mockEmailMain2), true);
+        assertEquals(true,friendService.isFriend(token, mockEmailMain2));
     }
 
     @org.junit.Test
     public void testIsRequestSendFriend() throws InterruptedException, ExecutionException {
-        assertEquals(friendService.isRequestSend(token, mockEmailMain3), true);
+        assertEquals(false, friendService.isRequestSend(token, mockEmailMain3));
     }
 
     /**
@@ -236,16 +240,11 @@ public class CasesTest extends ApplicationTest{
     public void testGetFriends() throws InterruptedException, ExecutionException {
         List<Person> persons = new ArrayList<>();
         Person person = new Person ();
-        person.setFoto_perfil(mockFotoPerfilMain3);
-        person.setNombre_usuario(mockUsernameMain3);
-        person.setPersona_id(mockEmailMain3);
-        persons.add(person);
-        person = new Person ();
         person.setFoto_perfil(mockFotoPerfilMain2);
         person.setNombre_usuario(mockUsernameMain2);
         person.setPersona_id(mockEmailMain2);
         persons.add(person);
-        assertEquals(friendService.getFriends(token, mockEmailMain), persons);
+        assertEquals(persons,friendService.getFriends(token, mockEmailMain));
     }
     /**
      * GameManageService tests
@@ -254,16 +253,16 @@ public class CasesTest extends ApplicationTest{
     @org.junit.Test
     public void testGetGame() throws InterruptedException, ExecutionException {
         Games game = new Games();
-        game.setImagen(imagenJuegoMock);
-        game.setNombre(juegoPrueba);
-        assertEquals(gameManageService.getGame(juegoPrueba, token), game);
+        game.setImagen("Juegos/1602371335549-codmw.jpg");
+        game.setNombre("COD Modern Warface");
+        assertEquals(game,gameManageService.getGame(juegoPrueba, tokenAdmin));
     }
     
 
 
     @org.junit.Test
     public void testIsAdminGameManage() throws InterruptedException, ExecutionException {
-        assertEquals(gameManageService.isAdmin(token), false);
+        assertEquals(false,gameManageService.isAdmin(token));
     }
 
     /**
@@ -272,7 +271,7 @@ public class CasesTest extends ApplicationTest{
 
     @org.junit.Test
     public void testGetGames() throws InterruptedException, ExecutionException {
-        assertEquals(gameService.getGames().size(), 7);
+        assertEquals(7,gameService.getGames().size());
     }
 
 
@@ -280,24 +279,32 @@ public class CasesTest extends ApplicationTest{
     public void testGetFavorites() throws InterruptedException, ExecutionException {
         List <Games> games  = new ArrayList<>();
         Games game = new Games();
-        game.setImagen(imagenJuegoMock);
-        game.setNombre(juegoPrueba);
+        game.setImagen("Juegos/1602371335549-codmw.jpg");
+        game.setNombre("COD Modern Warface");
         games.add(game);
-        assertEquals(gameService.getFavorites(mockEmailMain),games);
-    }
+        game.setImagen("Juegos/1602371345018-fifa21.jpg");
+        game.setNombre("FIFA 21");
+        games.add(game);
+        assertEquals(games.get(0).getNombre(), gameService.getFavorites(mockEmailMain).get(0).getNombre());
+    }        
+
+
 
     @org.junit.Test
     public void testFindMatchMaking() throws InterruptedException, ExecutionException {
         Matchmaking match = new Matchmaking();
         List<String> juegos = new ArrayList<>();
-        juegos.add("COD");
+        juegos.add("COD Modern Warface");
         match.setJuegos(juegos);
         match.setRegion("LAN");
         Person person = new Person();
         person.setFoto_perfil(mockFotoPerfilMain);
         person.setNombre_usuario(mockUsernameMain);
         person.setPersona_id(mockEmailMain);
-        assertEquals(matchmakingService.findMatch(match, token).size(),1 );
+        List<String> plataformas = new ArrayList<>();
+        plataformas.add("PS4");
+        match.setPlataformas(plataformas);
+        assertEquals(0,matchmakingService.findMatch(match, token).size());
     }
     /**
      * Delete matchmaking
@@ -311,23 +318,23 @@ public class CasesTest extends ApplicationTest{
          */
     @org.junit.Test
     public void testGetFeed() throws InterruptedException, ExecutionException {
-        assertEquals(postService.getFeed(token).size(), 1);
+        assertEquals(1,postService.getFeed(token).size());
     }
 
     @org.junit.Test
     public void testGetComments() throws InterruptedException, ExecutionException {
-        assertEquals(postService.getComments(idPublicacionMock, token).size(),1);
+        assertEquals(1,postService.getComments(idPublicacionMock, token).size());
     }
 
     @org.junit.Test
     public void testGetLikesF() throws InterruptedException, ExecutionException {
         Integer i = 1;
-        assertEquals(postService.getLikes(idPublicacionMock), i);
+        assertEquals(i,postService.getLikes(idPublicacionMock));
     }
 
     @org.junit.Test
     public void testGetPostsPosts() throws InterruptedException, ExecutionException {
-        assertEquals(postService.getPosts(mockEmail).size(),1);
+        assertEquals(20,postService.getPosts(mockEmail).size());
     }
 
     /**
@@ -336,24 +343,24 @@ public class CasesTest extends ApplicationTest{
 
     @org.junit.Test
     public void testSearchUsers() throws InterruptedException, ExecutionException {
-        assertEquals(searchService.searchUser("Persona","c").size(),6);
+        assertEquals(7,searchService.searchUser("Persona","c").size());
     }
 
     @org.junit.Test
     public void testSearchGames() throws InterruptedException, ExecutionException {
-        assertEquals(searchService.searchUser("Juego","COD").size(),2);
+        assertEquals(2,searchService.searchGames("Juego","COD").size());
     }
     @org.junit.Test
     public void testSearchPosts() throws InterruptedException, ExecutionException {
-        assertEquals(searchService.searchPost("Publicaciones","algo").size(),1);
+        assertEquals(1,searchService.searchPost("Publicaciones","algo").size());
     }
     @org.junit.Test
     public void testSearchClanes() throws InterruptedException, ExecutionException {
-        assertEquals(searchService.searchClan("Clanes","_").size(),1);
+        assertEquals(1,searchService.searchClan("Clanes","_").size());
     }
     @org.junit.Test
     public void testSearchSquads() throws InterruptedException, ExecutionException {
-        assertEquals(searchService.searchSquad("Squad","squad").size(),2);
+        assertEquals(3,searchService.searchSquad("Squad","squad").size());
     }
     
     /**
@@ -364,16 +371,18 @@ public class CasesTest extends ApplicationTest{
         Squad squad = new Squad ();
         squad.setAdmin(mockEmailMain2);
         squad.setVisibilidad(true);
+        squad.setId_squad("3lAILc7awa6S57laET0T");
+        squad.setChat_id("DJRb6VULUZIk29y64xXx");
         squad.setNombre("Nuevo squad");
         squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
         Person person = new Person();
         List<Person> integrantes = new ArrayList<>();
         person.setFoto_perfil("Fotoperfil/1605942759382-graicas_faryd.png");
-        person.setNombre_usuario(mockEmailMain2);
-        person.setPersona_id(mockUsernameMain2);
+        person.setNombre_usuario(mockUsernameMain2);
+        person.setPersona_id(mockEmailMain2);
         integrantes.add(person);
         squad.setIntegrantes(integrantes);
-        assertEquals(squadsService.getSquad("3lAILc7awa6S57laET0T"), squad);
+        assertEquals(squad,squadsService.getSquad("3lAILc7awa6S57laET0T"));
     }
     
     
@@ -381,11 +390,11 @@ public class CasesTest extends ApplicationTest{
     public void testGetIntegrantes() throws InterruptedException, ExecutionException {
         Person person = new Person();
         List<Person> integrantes = new ArrayList<>();
-        person.setFoto_perfil("Fotoperfil/1605942759382-graicas_faryd.png");
-        person.setNombre_usuario(mockEmailMain2);
-        person.setPersona_id(mockUsernameMain2);
+        person.setFoto_perfil(mockFotoPerfilMain2);
+        person.setNombre_usuario(mockUsernameMain2);
+        person.setPersona_id(mockEmailMain2);
         integrantes.add(person);
-        assertEquals(squadsService.getIntegrantes("3lAILc7awa6S57laET0T"),integrantes);
+        assertEquals(integrantes.get(0).getPersona_id(),squadsService.getIntegrantes("3lAILc7awa6S57laET0T").get(0).getPersona_id());
     }
     
     @org.junit.Test
@@ -406,7 +415,7 @@ public class CasesTest extends ApplicationTest{
         integrantes.add(person);
         squad.setIntegrantes(integrantes);
         squads.add(squad);
-        assertEquals(squadsService.getFriendsSquads(token),squads);
+        assertEquals(squads,squadsService.getFriendsSquads(token));
     }
 
 
@@ -423,18 +432,18 @@ public class CasesTest extends ApplicationTest{
         Person person = new Person();
         List<Person> integrantes = new ArrayList<>();
         person.setFoto_perfil("Fotoperfil/1605942759382-graicas_faryd.png");
-        person.setNombre_usuario(mockEmailMain2);
-        person.setPersona_id(mockUsernameMain2);
+        person.setNombre_usuario(mockUsernameMain2);
+        person.setPersona_id(mockEmailMain2);
         integrantes.add(person);
         squad.setIntegrantes(integrantes);
         squads.add(squad);
-        assertEquals(squadsService.getMySquads(token),squads);
+        assertEquals(squads,squadsService.getMySquads(token2));
     }
 
 
     @org.junit.Test
     public void testGetInvitations() throws InterruptedException, ExecutionException {
-        assertEquals(squadsService.getInvitations(token).size(),0);
+        assertEquals(0,squadsService.getInvitations(token).size());
     }
 
 
@@ -444,29 +453,29 @@ public class CasesTest extends ApplicationTest{
      */
     @org.junit.Test
     public void testUnReportPost() throws InterruptedException, ExecutionException {
-        assertEquals(userManageService.unreportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin),true);
+        assertEquals(true,userManageService.unreportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin));
     }
 
     @org.junit.Test
     public void testUnReportProfile() throws InterruptedException, ExecutionException {
-        assertEquals(userManageService.unreportPost("crackmilotest10@match.com", tokenAdmin),true);
+        assertEquals(true,userManageService.unreportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin));
     }
 
     @org.junit.Test
     public void testGetReportedPosts() throws InterruptedException, ExecutionException {
-        assertEquals(userManageService.getReportedPosts(tokenAdmin).size(),5);
+        assertEquals(5, userManageService.getReportedPosts(tokenAdmin).size());
     }
 
     @org.junit.Test
     public void testGetReportedUsers() throws InterruptedException, ExecutionException {
-        assertEquals(userManageService.getReportedUsers(tokenAdmin).size(),2);
+        assertEquals(2,userManageService.getReportedUsers(tokenAdmin).size());
     }
 
 
 
     @org.junit.Test
     public void testIsAdminUserManage() throws InterruptedException, ExecutionException {
-        assertEquals(userManageService.isAdmin(token),false);
+        assertEquals(false,userManageService.isAdmin(token));
     }
 
     /**
@@ -500,7 +509,7 @@ public class CasesTest extends ApplicationTest{
     }
 
     public void testGetAllUsers() throws InterruptedException, ExecutionException, ParseException {
-        assertEquals(userService.getAllUsers().size(), 14);
+        assertEquals(14, userService.getAllUsers().size());
     }
 
     @org.junit.Test
@@ -522,16 +531,19 @@ public class CasesTest extends ApplicationTest{
         user.setPlataformas(plataformas);
         user.setRegion_id("Europa Nórdica y Este");
         user.setReportado(false);
-        assertEquals(userService.getUserByToken(token), user);
+        assertEquals(user,userService.getUserByToken(token));
     }
 
 
 
     @org.junit.Test
     public void testIsAdminUserService() throws InterruptedException, ExecutionException, ParseException {
-        assertEquals(userService.isAdmin(tokenAdmin), true);
+        assertEquals(true,userService.isAdmin(tokenAdmin));
     }
-
+    @org.junit.Test
+    public void testIsNotAdminUserService() throws InterruptedException, ExecutionException, ParseException {
+        assertEquals(false,userService.isAdmin(token));
+    }
     /* Tests that include a create or an addition    
     @org.junit.Test
     public void testCreateChat() throws InterruptedException, ExecutionException {
@@ -540,7 +552,7 @@ public class CasesTest extends ApplicationTest{
         inte.add("camiloru007@gmail.com");
         inte.add("crackmilo10@match.com");
         chat.setIntegrantes(inte);
-        assertEquals(chatService.createChat(chat, token), true);
+        assertEquals(true,chatService.createChat(chat, token));
     }
 
         @org.junit.Test
@@ -550,275 +562,307 @@ public class CasesTest extends ApplicationTest{
         clan.setDescripcion("Este es un clan de prueba");
         clan.setEsPrivado(true);
         clan.setFoto_clan("1604808042993-facherita.png");
-        assertEquals(clanService.createClan(clan, token), true);
+        assertEquals(true,clanService.createClan(clan, token));
     }
     
     */
 
-//@org.junit.Test
-//public void testCreateChat() throws InterruptedException, ExecutionException {
-//    Chat chat = new Chat();
-//    List<String> inte = new ArrayList<>();
-//    inte.add("camiloru007@gmail.com");
-//    inte.add("crackmilo10@match.com");
-//    chat.setIntegrantes(inte);
-//    assertEquals(chatService.createChat(chat, token), true);
-//}
+    @org.junit.Test
+    public void testCreateChat() throws InterruptedException, ExecutionException {
+        Chat chat = new Chat();
+        List<String> inte = new ArrayList<>();
+        inte.add("camiloru007@gmail.com");
+        inte.add("crackmilo10@match.com");
+        chat.setIntegrantes(inte);
+        assertEquals(true, chatService.createChat(chat, token));
+    }
 
-//@org.junit.Test
-//public void testSendMessage() throws InterruptedException, ExecutionException {
-//    Mensaje msj = new Mensaje();
-//    msj.setFechayhora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-//    msj.setMensaje("messaje de prueba");
-//    msj.setRemitente(mockEmail);
-//    assertEquals(chatService.sendMessage(msj, mockChatId), true);
-//}
-//@org.junit.Test
-//public void updateChat() throws InterruptedException, ExecutionException, ParseException {
-//    List <Chat> chats = new ArrayList<>();
-//    Chat chat= new Chat ();
-//    Mensaje msj =new  Mensaje();
-//    chat.setId(mockChatId);
-//    integrantesMock.add(mockEmailMain);
-//    integrantesMock.add(mockEmailMain2);
-//    chat.setIntegrantes(integrantesMock);
-//    msj.setId(mockMsjId);
-//    msj.setMensaje("!Ya puedes comenzar a chatear con tu amigo!!!!");
-//    msj.setRemitente(mockEmailMain2);
-//    Date result = null;
-//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//    result  = dateFormat.parse(dateForChats);
-//    msj.setFechayhora(result);
-//    mensajesMock.add(msj);
-//    mensajesMock.clear();
-//    chat.setMensajes(mensajesMock);
-//    chat.setUltimomsj(result);
-//    chats.add(chat);
-//    integrantesMock.clear();
-//    assertEquals(chatService.updateChat(mockChatId,chat), true);
-//}
-//@org.junit.Test
-//public void testCreateClan() throws InterruptedException, ExecutionException {
-//    Clan clan = new Clan ();
-//    clan.setNombre_clan("Clan_prueba");
-//    clan.setDescripcion("Este es un clan de prueba");
-//    clan.setEsPrivado(false);
-//    clan.setFoto_clan("Clanes/1605948415996-luk.png");
-//    assertEquals(clanService.createClan(clan, token), true);
-//}
-// error en el codigo
-//@org.junit.Test
-//public void testAddMemberClan() throws InterruptedException, ExecutionException {
-//    Person person = new Person ();
-//    person.setFoto_perfil(mockFotoPerfilMain2);
-//    person.setNombre_usuario(mockUsernameMain2);
-//    person.setPersona_id(mockEmailMain2);
-//    assertEquals(clanService.addMember(person, nombreClan, token), true);
-//}
-//@org.junit.Test
-//public void testAddPostClan() throws InterruptedException, ExecutionException {
-//    Post post = new Post();
-//    post.setContenido("prueba");
-//    post.setImagen("imagen");
-//    assertEquals(clanService.addPost(post, nombreClan, token), true);
-//}
-//@org.junit.Test
-//public void testRejectRequests() throws InterruptedException, ExecutionException {
-//    assertEquals(clanService.rejectRequest(mockEmailMain2, nombreClan,token), true);
-//}
-// @org.junit.Test
-// public void testAddFriend() throws InterruptedException, ExecutionException {
-//     assertEquals(friendService.addFriend(token, mockEmailMain3), true);
-// }
-//@org.junit.Test
-//public void testSendFriendRequest() throws InterruptedException, ExecutionException {
-//    assertEquals(friendService.sendFriendRequest(token, mockEmailMain4), true);
-//}
-//@org.junit.Test
-//public void testDeleteFriend() throws InterruptedException, ExecutionException {
-//    friendService.addFriend(token, mockEmailMain4);
-//    assertEquals(friendService.deleteFriend(token, mockEmailMain4), true);
-//}
-//@org.junit.Test
-//public void testCreateGame() throws InterruptedException, ExecutionException {
-//    Games game = new Games();
-//    game.setImagen(imagenJuegoMock);
-//    game.setNombre(juegoPrueba);
-//    assertEquals(gameManageService.createGame(game, token), true);
-//}
-//@org.junit.Test
-//public void testUpdateGame() throws InterruptedException, ExecutionException {
-//    Games game = new Games();
-//    game.setImagen("Juegos/carro.png");
-//    game.setNombre("Updated Game");
-//    assertEquals(gameManageService.updateGame(juegoPrueba, game, token), true);
-//}
-//@org.junit.Test
-//public void testDeleteGame() throws InterruptedException, ExecutionException {
-//    assertEquals(gameManageService.deleteGame("Updated Game", "Juegos/carro.png", token), true);
-//}
-//@org.junit.Test
-//public void testSetGames() throws InterruptedException, ExecutionException {
-//    List <Games> games  = new ArrayList<>();
-//    Games game = new Games();
-//    game.setImagen(imagenJuegoMock);
-//    game.setNombre(juegoPrueba);
-//    games.add(game);
-//    assertEquals(gameService.setGames(token,games), true);
-//}
-//@org.junit.Test
-//public void testUploadPost() throws InterruptedException, ExecutionException {
-//    Post post = new Post();
-//    post.setContenido("contenido");
-//    post.setImagen("Publicaciones/1601513801553-436-don-arbolon-cuentos-para-ninos.jpg");
-//    assertEquals(postService.uploadPost(post, token), true);
-//}
-//@org.junit.Test
-//public void testMakeComments() throws InterruptedException, ExecutionException {
-//    Comment comment = new Comment();
-//    comment.setComentario("comentario prueba");
-//    comment.setPublicacion_id(idPublicacionMock);
-//    assertEquals(postService.makeComment(token,comment), true);
-//}
-//@org.junit.Test
-//public void testLike() throws InterruptedException, ExecutionException {
-//    assertEquals(postService.like(idPublicacionMock, token),true);
-//}
-//@org.junit.Test
-//public void testCreateSquads() throws InterruptedException, ExecutionException {
-//    Squad squad = new Squad ();
-//    squad.setNombre("prueba squa");
-//    squad.setImagen("Squads/Awesome-Love-Heart-3D-Wallpapers-Art.jpg");
-//    assertEquals(squadsService.createSquad(squad, token), true);
-//}
-//
-//@org.junit.Test
-//public void testUpdateSquads() throws InterruptedException, ExecutionException {
-//    Squad squad = new Squad ();
-//    squad.setAdmin(mockEmailMain2);
-//    squad.setId_squad("3lAILc7awa6S57laET0T");
-//    squad.setChat_id("DJRb6VULUZIk29y64xXx");
-//    squad.setVisibilidad(true);
-//    squad.setNombre("prueba squa updte");
-//    squad.setImagen("Squads/Awesome-Love-Heart-3D-Wallpapers-Art.jpg");
-//    assertEquals(squadsService.updateSquad(squad), true);
-//}
-//@org.junit.Test
-//public void testDeleteSquads() throws InterruptedException, ExecutionException {
-//    assertEquals(squadsService.deleteSquad("3lAILc7awa6S57laET0T"), true);
-//}
-//@org.junit.Test
-//public void testSendInvitations() throws InterruptedException, ExecutionException {
-//    List<String> invitations = new ArrayList<>();
-//    invitations.add(mockEmailMain3);
-//    invitations.add(mockEmailMain4);
-//    assertEquals(squadsService.sendInvitations(invitations, token,"Nuevo squad","3lAILc7awa6S57laET0T"),true);
-//}
-//@org.junit.Test
-//public void testExitSquad() throws InterruptedException, ExecutionException {
-//    Squad squad = new Squad ();
-//    squad.setAdmin(mockEmailMain2);
-//    squad.setVisibilidad(true);
-//    squad.setNombre("Nuevo squad");
-//    squad.setId_squad("3lAILc7awa6S57laET0T");
-//    squad.setChat_id("DJRb6VULUZIk29y64xXx");
-//    squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
-//    Person person = new Person();
-//    List<Person> integrantes = new ArrayList<>();
-//    person.setFoto_perfil("Fotoperfil/1605942759382-graicas_faryd.png");
-//    person.setNombre_usuario(mockEmailMain2);
-//    person.setPersona_id(mockUsernameMain2);
-//    integrantes.add(person);
-//    squad.setIntegrantes(integrantes);
-//    assertEquals(squadsService.exitSquad(token, squad),true);
-//}
-//@org.junit.Test
-//public void testAcceptInvite() throws InterruptedException, ExecutionException {
-//    Squad squad = new Squad ();
-//    squad.setAdmin(mockEmailMain2);
-//    squad.setVisibilidad(true);
-//    squad.setNombre("Nuevo squad");
-//    squad.setId_squad("3lAILc7awa6S57laET0T");
-//    squad.setChat_id("DJRb6VULUZIk29y64xXx");
-//    squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
-//    assertEquals(squadsService.acceptInvite(token,squad,mockEmailMain2),true);
-//}
-//@org.junit.Test
-//public void testJoinSquad() throws InterruptedException, ExecutionException {
-//    Squad squad = new Squad ();
-//    squad.setAdmin(mockEmailMain2);
-//    squad.setVisibilidad(true);
-//    squad.setNombre("Nuevo squad");
-//    squad.setId_squad("3lAILc7awa6S57laET0T");
-//    squad.setChat_id("DJRb6VULUZIk29y64xXx");
-//    squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
-//    assertEquals(squadsService.joinSquad(token,squad),true);
-//}
-//@org.junit.Test
-//public void testDeletePost() throws InterruptedException, ExecutionException {
-//    assertEquals(userManageService.deletePost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin), true);
-//}
-//@org.junit.Test
-//public void testDeleteProfile() throws InterruptedException, ExecutionException {
-//    assertEquals(userManageService.deleteProfile(profileToDelete,tokenAdmin),true);
-//}
-//@org.junit.Test
-//public void testRegister() throws InterruptedException, ExecutionException, ParseException {
-//    User user=new User();
-//    user.setNombres("Nombre registro");
-//    user.setApellidos("Apellido registro");
-//    user.setCorreo("usuborrar@gmail.com");
-//    user.setConexion(100);
-//    Date result;
-//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//    result  = dateFormat.parse("2020-11-21 02:17:53");
-//    user.setFecha_nacimiento(result);
-//    user.setFoto_perfil("Fotosperfil/default.png");
-//    user.setJugando("");
-//    user.setNombre_usuario("usuario borrar");
-//    List <String> plataformas = new ArrayList<>();
-//    plataformas.add("PS4");
-//    user.setPlataformas(plataformas);
-//    user.setRegion_id("Brasil");
-//    assertEquals(userService.register(user),true);
-//}
-//@org.junit.Test
-//public void testUpdateProfile() throws InterruptedException, ExecutionException, ParseException {
-//    User user=new User();
-//    user.setNombres("Nombre registro updated");
-//    user.setApellidos("Apellido registro ipdated");
-//    user.setCorreo("usuborrar@gmail.com");
-//    user.setConexion(100);
-//    Date result;
-//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//    result  = dateFormat.parse("2020-11-21 02:17:53");
-//    user.setFecha_nacimiento(result);
-//    user.setFoto_perfil("Fotosperfil/default.png");
-//    user.setJugando("");
-//    user.setNombre_usuario("usuario borrar updated");
-//    List <String> plataformas = new ArrayList<>();
-//    plataformas.add("PS4");
-//    user.setPlataformas(plataformas);
-//    user.setRegion_id("Brasil");
-//    assertEquals(userService.updateProfile(user,token),true);
-//}
-//@org.junit.Test
-//public void testReportProfile() throws InterruptedException, ExecutionException, ParseException {
-//    assertEquals(userService.reportProfile(mockEmailMain3), true);
-//}
-//@org.junit.Test
-//public void testReportPost() throws InterruptedException, ExecutionException, ParseException {
-//    assertEquals(userService.reportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500"), true);
-//}
-//@org.junit.Test
-//public void testAddRequests() throws InterruptedException, ExecutionException {
-//    assertEquals(clanService.addRequests(nombreClan, token2), true);
-//}
-//@org.junit.Test
-//public void deleteMember() throws InterruptedException, ExecutionException {
-//    assertEquals(clanService.deleteMember(mockEmailMain2, nombreClan, token));
-//}
-
+    @org.junit.Test
+    public void testSendMessage() throws InterruptedException, ExecutionException {
+        Mensaje msj = new Mensaje();
+        msj.setFechayhora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        msj.setMensaje("messaje de prueba");
+        msj.setRemitente(mockEmail);
+        assertEquals(true,chatService.sendMessage(msj, mockChatId));
+    }
+    @org.junit.Test
+    public void updateChat() throws InterruptedException, ExecutionException, ParseException {
+        List <Chat> chats = new ArrayList<>();
+        Chat chat= new Chat ();
+        Mensaje msj =new  Mensaje();
+        chat.setId(mockChatId);
+        integrantesMock.add(mockEmailMain);
+        integrantesMock.add(mockEmailMain2);
+        chat.setIntegrantes(integrantesMock);
+        msj.setId(mockMsjId);
+        msj.setMensaje("!Ya puedes comenzar a chatear con tu amigo!!!!");
+        msj.setRemitente(mockEmailMain2);
+        Date result = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        result  = dateFormat.parse(dateForChats);
+        msj.setFechayhora(result);
+        mensajesMock.add(msj);
+        mensajesMock.clear();
+        chat.setMensajes(mensajesMock);
+        chat.setUltimomsj(result);
+        chats.add(chat);
+        integrantesMock.clear();
+        assertEquals(true,chatService.updateChat(mockChatId,chat));
+    }
+    @org.junit.Test
+    public void testCreateClan() throws InterruptedException, ExecutionException {
+        Clan clan = new Clan ();
+        clan.setNombre_clan("Clan_prueba");
+        clan.setDescripcion("Este es un clan de prueba");
+        clan.setEsPrivado(false);
+        clan.setFoto_clan("Clanes/1605948415996-luk.png");
+        assertEquals(true,clanService.createClan(clan, token));
+    }
+    @org.junit.Test
+    public void testAddMemberClan() throws InterruptedException, ExecutionException {
+        Person person = new Person ();
+        person.setFoto_perfil(mockFotoPerfilMain2);
+        person.setNombre_usuario(mockUsernameMain2);
+        person.setPersona_id(mockEmailMain2);
+        assertEquals(true,clanService.addMember(person, nombreClan, token));
+    }
+    @org.junit.Test
+    public void testAddPostClan() throws InterruptedException, ExecutionException {
+        Post post = new Post();
+        post.setContenido("prueba");
+        post.setImagen("imagen");
+        assertEquals(true,clanService.addPost(post, nombreClan, token));
+    }
+    @org.junit.Test
+    public void testRejectRequests() throws InterruptedException, ExecutionException {
+        assertEquals(true,clanService.rejectRequest(mockEmailMain2, nombreClan,token));
+    }
+     @org.junit.Test
+     public void testAddFriend() throws InterruptedException, ExecutionException {
+         assertEquals(true,friendService.addFriend(token, mockEmailMain3));
+     }
+    @org.junit.Test
+    public void testSendFriendRequest() throws InterruptedException, ExecutionException {
+        assertEquals(true,friendService.sendFriendRequest(token, mockEmailMain4));
+    }
+    @org.junit.Test
+    public void testDeleteFriend() throws InterruptedException, ExecutionException {
+        friendService.addFriend(token, mockEmailMain4);
+        assertEquals(true,friendService.deleteFriend(token, mockEmailMain4));
+    }
+    @org.junit.Test
+    public void testCreateGame() throws InterruptedException, ExecutionException {
+        Games game = new Games();
+        game.setImagen(imagenJuegoMock);
+        game.setNombre(juegoPrueba);
+        assertEquals(true,gameManageService.createGame(game, token));
+    }
+    @org.junit.Test
+    public void testUpdateGame() throws InterruptedException, ExecutionException {
+        Games game = new Games();
+        game.setImagen("Juegos/carro.png");
+        game.setNombre("Updated Game");
+        assertEquals(true,gameManageService.updateGame(juegoPrueba, game, tokenAdmin);
+    }
+    @org.junit.Test
+    public void testDeleteGame() throws InterruptedException, ExecutionException {
+        assertEquals(true,gameManageService.deleteGame("Updated Game", "Juegos/carro.png", token));
+    }
+    @org.junit.Test
+    public void testSetGames() throws InterruptedException, ExecutionException {
+        List <Games> games  = new ArrayList<>();
+        Games game = new Games();
+        game.setImagen(imagenJuegoMock);
+        game.setNombre(juegoPrueba);
+        games.add(game);
+        assertEquals(true,gameService.setGames(token,games));
+    }
+    @org.junit.Test
+    public void testUploadPost() throws InterruptedException, ExecutionException {
+        Post post = new Post();
+        post.setContenido("contenido");
+        post.setImagen("Publicaciones/1601513801553-436-don-arbolon-cuentos-para-ninos.jpg");
+        assertEquals(true,postService.uploadPost(post, token));
+    }
+    @org.junit.Test
+    public void testMakeComments() throws InterruptedException, ExecutionException {
+        Comment comment = new Comment();
+        comment.setComentario("comentario prueba");
+        comment.setPublicacion_id(idPublicacionMock);
+        assertEquals(true,postService.makeComment(token,comment));
+    }
+    @org.junit.Test
+    public void testLike() throws InterruptedException, ExecutionException {
+        assertEquals(true,postService.like(idPublicacionMock, token));
+    }
+    @org.junit.Test
+    public void testCreateSquads() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad ();
+        squad.setNombre("prueba squa");
+        squad.setImagen("Squads/Awesome-Love-Heart-3D-Wallpapers-Art.jpg");
+        assertEquals(squad,squadsService.createSquad(squad, token));
+    }
     
+    @org.junit.Test
+    public void testUpdateSquads() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad ();
+        squad.setAdmin(mockEmailMain2);
+        squad.setId_squad("3lAILc7awa6S57laET0T");
+        squad.setChat_id("DJRb6VULUZIk29y64xXx");
+        squad.setVisibilidad(true);
+        squad.setNombre("prueba squa update");
+        squad.setImagen("Squads/Awesome-Love-Heart-3D-Wallpapers-Art.jpg");
+        assertEquals(true,squadsService.updateSquad(squad));
+    }
+    @org.junit.Test
+    public void testExitSquad() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad ();
+        squad.setAdmin(mockEmailMain2);
+        squad.setVisibilidad(true);
+        squad.setNombre("Nuevo squad");
+        squad.setId_squad("3lAILc7awa6S57laET0T");
+        squad.setChat_id("DJRb6VULUZIk29y64xXx");
+        squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
+        Person person = new Person();
+        List<Person> integrantes = new ArrayList<>();
+        person.setFoto_perfil("Fotoperfil/1605942759382-graicas_faryd.png");
+        person.setNombre_usuario(mockEmailMain2);
+        person.setPersona_id(mockUsernameMain2);
+        integrantes.add(person);
+        squad.setIntegrantes(integrantes);
+        assertEquals(true,squadsService.exitSquad(token, squad));
+    }
+    @org.junit.Test
+    public void testDeleteSquads() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad ();
+        squad.setAdmin(mockEmailMain2);
+        squad.setVisibilidad(true);
+        squad.setNombre("Nuevo squad");
+        squad.setId_squad("3lAILc7awa6S57laET0T");
+        squad.setChat_id("DJRb6VULUZIk29y64xXx");
+        squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
+        Person person = new Person();
+        List<Person> integrantes = new ArrayList<>();
+        person.setFoto_perfil("Fotoperfil/1605942759382-graicas_faryd.png");
+        person.setNombre_usuario(mockEmailMain2);
+        person.setPersona_id(mockUsernameMain2);
+        integrantes.add(person);
+        squad.setIntegrantes(integrantes);
+        assertEquals(true,squadsService.deleteSquad(squad));
+    }
+    @org.junit.Test
+    public void testSendInvitations() throws InterruptedException, ExecutionException {
+        List<String> invitations = new ArrayList<>();
+        invitations.add(mockEmailMain3);
+        invitations.add(mockEmailMain4);
+        assertEquals(true,squadsService.sendInvitations(invitations, token,"Nuevo squad","3lAILc7awa6S57laET0T"));
+    }
 
+    @org.junit.Test
+    public void testAcceptInvite() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad ();
+        squad.setAdmin(mockEmailMain2);
+        squad.setVisibilidad(true);
+        squad.setNombre("Nuevo squad");
+        squad.setId_squad("4nwFhMzKd9HILWpmo5RZ");
+        squad.setChat_id("DJRb6VULUZIk29y64xXx");
+        squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
+        RequestSquad reques = new RequestSquad ();
+        reques.setNombreSquad("Nuevo squad");
+        Person person = new Person();
+        person.setPersona_id(mockEmailMain2);
+        person.setNombre_usuario(mockUsernameMain);
+        person.setFoto_perfil("Fotosperfil/1605942759382-graicas_faryd.png");
+        reques.setRemitente(person);
+        assertEquals(true,squadsService.acceptInvite(reques, token2));
+    }
+    @org.junit.Test
+    public void testDeclineInvite() throws InterruptedException, ExecutionException {
+        RequestSquad reques = new RequestSquad ();
+        reques.setIdSquad("4nwFhMzKd9HILWpmo5RZ");
+        reques.setNombreSquad("Nuevo squad");
+        Person person = new Person();
+        person.setPersona_id(mockEmailMain2);
+        person.setNombre_usuario(mockUsernameMain);
+        person.setFoto_perfil("Fotosperfil/1605942759382-graicas_faryd.png");
+        reques.setRemitente(person);
+        assertEquals(true,squadsService.declineInvite(reques, token2));
+    }
+    @org.junit.Test
+    public void testJoinSquad() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad ();
+        squad.setAdmin(mockEmailMain2);
+        squad.setVisibilidad(true);
+        squad.setNombre("Nuevo squad");
+        squad.setId_squad("3lAILc7awa6S57laET0T");
+        squad.setChat_id("DJRb6VULUZIk29y64xXx");
+        squad.setImagen("Squads/1605839377349-Captura_de_pantalla_de_2020-11-19_21-29-22.png");
+        assertEquals(true,squadsService.joinSquad(token,squad));
+    }
+    @org.junit.Test
+    public void testDeletePost() throws InterruptedException, ExecutionException {
+        assertEquals(true,userManageService.deletePost("crackmilotest10@match.com2020-11-22T00:09:46.999326500", tokenAdmin));
+    }
+    @org.junit.Test
+    public void testDeleteProfile() throws InterruptedException, ExecutionException {
+        assertEquals(true,userManageService.deleteProfile(profileToDelete,tokenAdmin));
+    }
+    @org.junit.Test
+    public void testRegister() throws InterruptedException, ExecutionException, ParseException {
+        User user=new User();
+        user.setNombres("Nombre registro");
+        user.setApellidos("Apellido registro");
+        user.setCorreo("usuborrar@gmail.com");
+        user.setConexion(100);
+        Date result;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        result  = dateFormat.parse("2020-11-21 02:17:53");
+        user.setFecha_nacimiento(result);
+        user.setFoto_perfil("Fotosperfil/default.png");
+        user.setJugando("");
+        user.setNombre_usuario("usuario borrar");
+        List <String> plataformas = new ArrayList<>();
+        plataformas.add("PS4");
+        user.setPlataformas(plataformas);
+        user.setRegion_id("Brasil");
+        assertEquals(true,userService.register(user));
+    }
+    @org.junit.Test
+    public void testUpdateProfile() throws InterruptedException, ExecutionException, ParseException {
+        User user=new User();
+        user.setNombres("Nombre registro updated");
+        user.setApellidos("Apellido registro ipdated");
+        user.setCorreo("usuborrar@gmail.com");
+        user.setConexion(100);
+        Date result;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        result  = dateFormat.parse("2020-11-21 02:17:53");
+        user.setFecha_nacimiento(result);
+        user.setFoto_perfil("Fotosperfil/default.png");
+        user.setJugando("");
+        user.setNombre_usuario("usuario borrar updated");
+        List <String> plataformas = new ArrayList<>();
+        plataformas.add("PS4");
+        user.setPlataformas(plataformas);
+        user.setRegion_id("Brasil");
+        assertEquals(true,userService.updateProfile(user,token));
+    }
+    @org.junit.Test
+    public void testReportProfile() throws InterruptedException, ExecutionException, ParseException {
+        assertEquals(true,userService.reportProfile(mockEmailMain3));
+    }
+    @org.junit.Test
+    public void testReportPost() throws InterruptedException, ExecutionException, ParseException {
+        assertEquals(true,userService.reportPost("crackmilotest10@match.com2020-11-22T00:09:46.999326500"));
+    }
+    @org.junit.Test
+    public void testAddRequests() throws InterruptedException, ExecutionException {
+        assertEquals(true,clanService.addRequests(nombreClan, token2));
+    }
+
+    @org.junit.Test
+    public void testKickFromSquad() throws InterruptedException, ExecutionException {
+        Squad squad = new Squad();
+        assertEquals(false,squadsService.kickFromSquad("fyb85bKUFoyurCFDuVCP", squad, token));
+    }
 }

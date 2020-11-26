@@ -26,8 +26,10 @@ public class SearchServiceImpl implements SearchService {
         List<User> personasResult = new ArrayList<>();
         for (DocumentSnapshot doc : firebaseCrud.getCollection(collectionName).get().get().getDocuments()) {
             User userAux = doc.toObject(User.class);
-            if (userAux.getNombre_usuario().toLowerCase().contains(searchWord.toLowerCase().trim())) {
-                personasResult.add(userAux);
+            if (userAux.getNombre_usuario() != null){
+                if (userAux.getNombre_usuario().toLowerCase().contains(searchWord.toLowerCase().trim())) {
+                    personasResult.add(userAux);
+                }
             }
         }
         return personasResult;

@@ -28,11 +28,13 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     FirebaseSecAuth firebaseSecAuth;
 
+    @Override
     public boolean createChat(Chat chat, String token) throws InterruptedException, ExecutionException {
         chat = initializeChat(chat, "¡Ya puedes comenzar a chatear con tu amigo!", token);
         return firebaseCrud.saveWithoutId("Chat", chat, "Mensajes", chat.getMensajes().get(0));
     }
 
+    @Override
     public String createChatSquads(String token) throws InterruptedException, ExecutionException {
         List<String> integrantesForChat = new ArrayList<>();
         String id = firebaseCrud.createVoidAndGetId("Chat");
@@ -60,9 +62,8 @@ public class ChatServiceImpl implements ChatService {
         return chat;
     }
 
+    @Override
     public boolean sendMessage(Mensaje msj, String chat_id) throws InterruptedException, ExecutionException {
-        msj.setFechayhora(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        msj.setId(null);
         boolean b = firebaseCrud.saveSubCollection("Chat", chat_id, "Mensajes", msj);
         Chat updatedChat = firebaseCrud.getById("Chat", chat_id).toObject(Chat.class);
         updatedChat.setUltimomsj(msj.getFechayhora());
@@ -70,6 +71,7 @@ public class ChatServiceImpl implements ChatService {
         return b && b2;
     }
 
+    @Override
     public List<Chat> getChats(String token) throws InterruptedException, ExecutionException {
         List<Chat> chats = new ArrayList<>();
         CollectionReference collection = firebaseCrud.getCollection("Chat");
@@ -94,6 +96,7 @@ public class ChatServiceImpl implements ChatService {
         return chats;
     }
 
+    @Override
     public Chat getChatById(String idChat) throws InterruptedException, ExecutionException {
         List<Mensaje> mensajes = new ArrayList<>();
         Chat chat = new Chat();
@@ -112,7 +115,14 @@ public class ChatServiceImpl implements ChatService {
         return chat;
     }
 
+    @Override
     public boolean updateChat(String idChat, Chat chat) {
         return firebaseCrud.update(idChat, "Chat", chat);
+    }
+    
+    @Override
+    public boolean deleteChat (String idChat){
+        firebaseCrud.deleteCollection(firebaseCrud.getSubCollection("Chat", idChat, "Mensajes"), 10);
+        return firebaseCrud.delete(idChat, "Chat");
     }
 }

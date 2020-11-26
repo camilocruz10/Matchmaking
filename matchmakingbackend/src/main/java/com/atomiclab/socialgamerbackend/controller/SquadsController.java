@@ -10,7 +10,6 @@ import com.atomiclab.socialgamerbackend.domain.model.Squad;
 import com.atomiclab.socialgamerbackend.service.SquadsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,11 +41,6 @@ public class SquadsController {
     @PutMapping("/squads/mysquads/update")
     public boolean updateSquad(@RequestBody Squad squad) throws InterruptedException, ExecutionException {
         return squadsService.updateSquad(squad);
-    }
-
-    @DeleteMapping("/squads/delete/{squadName}")
-    public boolean deleteSquad(@PathVariable String squadName) throws InterruptedException, ExecutionException {
-        return squadsService.deleteSquad(squadName);
     }
 
     @GetMapping("/squads/{squadId}")
@@ -84,9 +78,15 @@ public class SquadsController {
     }
 
     @PutMapping("squads/acceptInvite")
-    public boolean acceptInvite(@RequestHeader("X-Firebase-Auth") String token, @RequestBody Squad squad,
-            @RequestHeader("remitenteId") String remitenteId) throws InterruptedException, ExecutionException {
-        return squadsService.acceptInvite(token, squad, remitenteId);
+    public boolean acceptInvite(@RequestBody RequestSquad requestSquad, @RequestHeader("X-Firebase-Auth") String token)
+            throws InterruptedException, ExecutionException {
+        return squadsService.acceptInvite(requestSquad, token);
+    }
+
+    @PutMapping("squads/declineInvitation")
+    public boolean declineInvitation(@RequestBody RequestSquad requestSquad, @RequestHeader("X-Firebase-Auth") String token) 
+            throws InterruptedException, ExecutionException {
+        return squadsService.declineInvite(requestSquad, token);
     }
 
     @PutMapping("squads/join")
@@ -95,4 +95,9 @@ public class SquadsController {
         return squadsService.joinSquad(token, squad);
     }
 
+    @PutMapping("squads/dump/{personId:.+}")
+    public boolean kickFromSquad (@RequestHeader("X-Firebase-Auth") String token, @PathVariable String personId, @RequestBody Squad squad)
+            throws InterruptedException, ExecutionException {
+        return squadsService.kickFromSquad(personId, squad, token);
+    }
 }

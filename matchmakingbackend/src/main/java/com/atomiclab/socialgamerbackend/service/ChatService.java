@@ -14,4 +14,5 @@ public interface ChatService {
     public List<Chat> getChats(String token) throws InterruptedException, ExecutionException;
     public Chat getChatById(String idChat) throws InterruptedException, ExecutionException;
     public boolean updateChat(String idChat, Chat chat);
+    public boolean deleteChat (String idChat);
 }
